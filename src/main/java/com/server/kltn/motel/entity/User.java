@@ -1,7 +1,7 @@
 package com.server.kltn.motel.entity;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -27,8 +28,8 @@ public class User {
 	private String phone;
 	private String password;
 	private String address;
-	private Date createDate;
-	private Date updateDate;
+	private LocalDateTime createDate;
+	private LocalDateTime updateDate;
 	private boolean enable;
 	
 	@ManyToMany
@@ -41,6 +42,8 @@ public class User {
 	@OneToOne
 	@JoinColumn(name = "avatar", referencedColumnName = "id")
 	private Image avatar;
+	@OneToMany(mappedBy = "user")
+	List<Post> posts= new ArrayList<>();
 	
 	public Image getAvatar() {
 		return avatar;
@@ -80,16 +83,16 @@ public class User {
 	public void setAddress(String address) {
 		this.address = address;
 	}
-	public Date getCreateDate() {
+	public LocalDateTime getCreateDate() {
 		return createDate;
 	}
-	public void setCreateDate(Date createDate) {
+	public void setCreateDate(LocalDateTime createDate) {
 		this.createDate = createDate;
 	}
-	public Date getUpdateDate() {
+	public LocalDateTime getUpdateDate() {
 		return updateDate;
 	}
-	public void setUpdateDate(Date updateDate) {
+	public void setUpdateDate(LocalDateTime updateDate) {
 		this.updateDate = updateDate;
 	}
 	public String getEmail() {
