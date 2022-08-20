@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.server.kltn.motel.api.authentication.payload.NewUserDataset;
+import com.server.kltn.motel.common.HandleDateCommon;
 import com.server.kltn.motel.common.MessageCommon;
 import com.server.kltn.motel.entity.Role;
 import com.server.kltn.motel.entity.User;
@@ -46,6 +47,7 @@ public class AuthenServiceImpl implements AuthenService{
 		user.setPhone(newUserDataset.getPhone());
 		user.setEnable(true);
 		user.setPassword(passwordEncoder.encode(newUserDataset.getPassword()));
+		user.setCreateDate(new HandleDateCommon().getCurrentDateTime());
 		List<Role> roles= new ArrayList<>();
 		roles.add(new Role(1,"ROLE_USER"));
 		user.setRoles(roles);
