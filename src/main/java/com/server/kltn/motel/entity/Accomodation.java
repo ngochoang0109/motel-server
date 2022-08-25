@@ -1,5 +1,7 @@
 package com.server.kltn.motel.entity;
 
+import java.security.KeyStore.PrivateKeyEntry;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -24,6 +26,27 @@ public class Accomodation {
 	private String furniture;
 	private boolean internet;
 	private boolean parking;
+	private boolean balcony;
+	private boolean airConditioner;
+	private boolean heater;
+	public boolean isBalcony() {
+		return balcony;
+	}
+	public void setBalcony(boolean balcony) {
+		this.balcony = balcony;
+	}
+	public boolean isAirConditioner() {
+		return airConditioner;
+	}
+	public void setAirConditioner(boolean airConditioner) {
+		this.airConditioner = airConditioner;
+	}
+	public boolean isHeater() {
+		return heater;
+	}
+	public void setHeater(boolean heater) {
+		this.heater = heater;
+	}
 	private String tower;
 	@OneToOne(mappedBy = "expense")
     private Post post;
