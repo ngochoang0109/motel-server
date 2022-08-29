@@ -1,5 +1,6 @@
 package com.server.kltn.motel.entity;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +20,8 @@ public class Discount {
 	private String code;
 	private int percent;
 	private long price;
+	private LocalDateTime startedDate;
+	private LocalDateTime endDate;
 	@ManyToMany(mappedBy = "discounts")
     private List<Expense> expenses = new ArrayList<>();
 	public long getId() {
@@ -50,5 +53,17 @@ public class Discount {
 	}
 	public void setExpenses(List<Expense> expenses) {
 		this.expenses = expenses;
+	}
+	public LocalDateTime getStartedDate() {
+		return startedDate;
+	}
+	public void setStartedDate(LocalDateTime startedDate) {
+		this.startedDate = startedDate;
+	}
+	public LocalDateTime getEndDate() {
+		return endDate;
+	}
+	public void setEndDate(LocalDateTime endDate) {
+		this.endDate = endDate;
 	}
 }
