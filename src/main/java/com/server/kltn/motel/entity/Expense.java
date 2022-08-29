@@ -24,6 +24,13 @@ public class Expense {
 	private long cost;
 	@OneToOne(mappedBy = "expense")
     private Post post;
+	
+	public Expense(long id, String type, long cost) {
+		super();
+		this.id = id;
+		this.type = type;
+		this.cost = cost;
+	}
 	@ManyToMany(cascade = { CascadeType.ALL })
     @JoinTable(
         name = "exp_dis", 
@@ -31,6 +38,10 @@ public class Expense {
         inverseJoinColumns = {@JoinColumn(name="dis_id")}
     )
     List<Discount> discounts = new ArrayList<>();
+	
+	public Expense() {
+		super();
+	}
 	public long getId() {
 		return id;
 	}
