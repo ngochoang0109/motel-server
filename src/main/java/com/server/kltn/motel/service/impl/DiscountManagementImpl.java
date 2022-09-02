@@ -1,6 +1,7 @@
 package com.server.kltn.motel.service.impl;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -65,7 +66,7 @@ public class DiscountManagementImpl implements DiscountManagementService{
 	
 	@Override
 	@Transactional
-	public Discount createDiscount(DiscountDatasource discountDatasource) {
+	public DiscountDatasource createDiscount(DiscountDatasource discountDatasource) {
 		discountDatasource.setCode(this.generatedCodeDiscount());
 		Discount discount=discountMapper.mapDiscountDatasourceToDiscount(discountDatasource);
 		
@@ -76,6 +77,17 @@ public class DiscountManagementImpl implements DiscountManagementService{
 		List<Expense> expenses= expenseRepository.findByIdIn(ids);
 		discount.setExpenses(expenses);
 		Discount newDiscount= discountRepository.save(discount);
-		return newDiscount;
+		return discountMapper.mapDiscountToDiscountDatasource(newDiscount);
+	}
+	
+	
+	@Override
+	public List<DiscountDatasource> getDiscountOfExpense(Long expenseId) {
+		List<Expense> expenses= expenseRepository.findByIdIn(new ArrayList<Long>(Arrays.asList(expenseId)));
+		List<DiscountDatasource> discountDatasources= new ArrayList<>();
+		for (Discount discount : expenses.get(0).getDiscounts()) {
+			discountDatasources.add(discountMapper.mapDiscountToDiscountDatasource(discount));
+		}
+		return discountDatasources;
 	}
 }

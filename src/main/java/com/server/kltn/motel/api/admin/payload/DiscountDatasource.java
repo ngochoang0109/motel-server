@@ -8,6 +8,25 @@ public class DiscountDatasource {
 	private long price;
 	private String startedDate;
 	private String endDate;
+	private String description;
+	
+	public DiscountDatasource(String code, int percent, long price, String startedDate, String endDate,
+			String description, List<ExpenseDatasource> expenseDatasources) {
+		super();
+		this.code = code;
+		this.percent = percent;
+		this.price = price;
+		this.startedDate = startedDate;
+		this.endDate = endDate;
+		this.description = description;
+		this.expenseDatasources = expenseDatasources;
+	}
+	public String getDescription() {
+		return description;
+	}
+	public void setDescription(String description) {
+		this.description = description;
+	}
 	private List<ExpenseDatasource> expenseDatasources;
 	
 	public List<ExpenseDatasource> getExpenseDatasources() {

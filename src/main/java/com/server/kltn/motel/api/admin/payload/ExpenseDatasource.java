@@ -4,9 +4,22 @@ public class ExpenseDatasource {
 	private long id;
 	private String type;
 	private long cost;
+	
 	public long getId() {
 		return id;
 	}
+	
+	public ExpenseDatasource() {
+		super();
+	}
+
+	public ExpenseDatasource(long id, String type, long cost) {
+		super();
+		this.id = id;
+		this.type = type;
+		this.cost = cost;
+	}
+
 	public void setId(long id) {
 		this.id = id;
 	}

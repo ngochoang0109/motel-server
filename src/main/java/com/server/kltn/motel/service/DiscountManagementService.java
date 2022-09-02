@@ -1,9 +1,11 @@
 package com.server.kltn.motel.service;
 
+import java.util.List;
+
 import com.server.kltn.motel.api.admin.payload.DiscountDatasource;
-import com.server.kltn.motel.entity.Discount;
 
 public interface DiscountManagementService {
 	String generatedCodeDiscount();
-	Discount createDiscount(DiscountDatasource discountDatasource);
+	DiscountDatasource createDiscount(DiscountDatasource discountDatasource);
+	List<DiscountDatasource> getDiscountOfExpense(Long expenseId);
 }

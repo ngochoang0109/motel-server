@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.server.kltn.motel.api.admin.payload.DiscountDatasource;
-import com.server.kltn.motel.entity.Discount;
 import com.server.kltn.motel.service.DiscountManagementService;
 
 @RestController
@@ -20,8 +19,8 @@ public class DiscountManagement {
 	private DiscountManagementService discountManagementService;
 	
 	@PostMapping("/discount-management-create")
-	public ResponseEntity<Discount> createDiscount(@RequestBody DiscountDatasource discountDatasource){
-		Discount discount= discountManagementService.createDiscount(discountDatasource);
-		return new ResponseEntity<Discount>(discount, HttpStatus.OK);
+	public ResponseEntity<DiscountDatasource> createDiscount(@RequestBody DiscountDatasource discountDatasource){
+		DiscountDatasource discount= discountManagementService.createDiscount(discountDatasource);
+		return new ResponseEntity<DiscountDatasource>(discount, HttpStatus.OK);
 	}
 }

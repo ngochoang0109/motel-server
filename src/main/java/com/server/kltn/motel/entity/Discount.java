@@ -4,10 +4,14 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
@@ -20,10 +24,23 @@ public class Discount {
 	private String code;
 	private int percent;
 	private long price;
+	private String description;
 	private LocalDateTime startedDate;
 	private LocalDateTime endDate;
-	@ManyToMany(mappedBy = "discounts")
+	
+	@ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
+    @JoinTable(
+        name = "exp_dis", 
+        joinColumns = {@JoinColumn(name="exp_id")},
+        inverseJoinColumns = {@JoinColumn(name="dis_id")}
+    )
     private List<Expense> expenses = new ArrayList<>();
+	public String getDescription() {
+		return description;
+	}
+	public void setDescription(String description) {
+		this.description = description;
+	}
 	public long getId() {
 		return id;
 	}

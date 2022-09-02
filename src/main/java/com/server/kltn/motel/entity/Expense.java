@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -31,13 +32,8 @@ public class Expense {
 		this.type = type;
 		this.cost = cost;
 	}
-	@ManyToMany(cascade = { CascadeType.ALL })
-    @JoinTable(
-        name = "exp_dis", 
-        joinColumns = {@JoinColumn(name="exp_id")},
-        inverseJoinColumns = {@JoinColumn(name="dis_id")}
-    )
-    List<Discount> discounts = new ArrayList<>();
+	@ManyToMany(cascade = { CascadeType.ALL },mappedBy = "expenses")
+    private List<Discount> discounts = new ArrayList<>();
 	
 	public Expense() {
 		super();
@@ -60,5 +56,16 @@ public class Expense {
 	public void setCost(long cost) {
 		this.cost = cost;
 	}
-	
+	public Post getPost() {
+		return post;
+	}
+	public void setPost(Post post) {
+		this.post = post;
+	}
+	public List<Discount> getDiscounts() {
+		return discounts;
+	}
+	public void setDiscounts(List<Discount> discounts) {
+		this.discounts = discounts;
+	}
 }
