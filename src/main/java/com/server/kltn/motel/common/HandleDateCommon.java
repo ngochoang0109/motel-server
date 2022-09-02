@@ -1,11 +1,13 @@
 package com.server.kltn.motel.common;
 
-import java.text.DateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+import org.springframework.stereotype.Component;
+
 import com.server.kltn.motel.constant.DateTimeConstant;
 
+@Component
 public class HandleDateCommon {
 	public LocalDateTime getCurrentDateTime() {
 		LocalDateTime currentTime= LocalDateTime.now();

@@ -1,5 +1,6 @@
 package com.server.kltn.motel.service.impl;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import com.server.kltn.motel.api.admin.payload.DiscountDatasource;
 import com.server.kltn.motel.api.admin.payload.ExpenseDatasource;
+import com.server.kltn.motel.common.HandleDateCommon;
 import com.server.kltn.motel.constant.CodeConstant;
 import com.server.kltn.motel.entity.Discount;
 import com.server.kltn.motel.entity.Expense;
@@ -31,6 +33,9 @@ public class DiscountManagementImpl implements DiscountManagementService{
 	
 	@Autowired
 	private DiscountMapper discountMapper;
+	
+	@Autowired
+	private HandleDateCommon handleDateCommon;
 	
 	@Override
 	public String generatedCodeDiscount() {
@@ -85,8 +90,11 @@ public class DiscountManagementImpl implements DiscountManagementService{
 	public List<DiscountDatasource> getDiscountOfExpense(Long expenseId) {
 		List<Expense> expenses= expenseRepository.findByIdIn(new ArrayList<Long>(Arrays.asList(expenseId)));
 		List<DiscountDatasource> discountDatasources= new ArrayList<>();
+		LocalDateTime currentDateTime= handleDateCommon.getCurrentDateTime();
 		for (Discount discount : expenses.get(0).getDiscounts()) {
-			discountDatasources.add(discountMapper.mapDiscountToDiscountDatasource(discount));
+			if (discount.getEndDate().compareTo(currentDateTime)>0) {
+				discountDatasources.add(discountMapper.mapDiscountToDiscountDatasource(discount));
+			}
 		}
 		return discountDatasources;
 	}
