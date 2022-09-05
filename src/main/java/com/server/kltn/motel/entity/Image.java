@@ -1,5 +1,6 @@
 package com.server.kltn.motel.entity;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -14,11 +15,17 @@ import javax.persistence.Table;
 public class Image {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	private String source;
 	private String type;
-	@ManyToOne
+	
+	public Image(String source, String type) {
+		super();
+		this.source = source;
+		this.type = type;
+	}
+	@ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="post_id")
 	private Post post;
 	public Post getPost() {

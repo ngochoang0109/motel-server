@@ -9,22 +9,20 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "expense")
 public class Expense {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	private String type;
 	private long cost;
-	@OneToOne(mappedBy = "expense")
-    private Post post;
+	@OneToMany(mappedBy = "expense", fetch = FetchType.LAZY)
+    private List<Post> post= new ArrayList<>();
 	
 	public Expense(long id, String type, long cost) {
 		super();
@@ -56,16 +54,16 @@ public class Expense {
 	public void setCost(long cost) {
 		this.cost = cost;
 	}
-	public Post getPost() {
-		return post;
-	}
-	public void setPost(Post post) {
-		this.post = post;
-	}
 	public List<Discount> getDiscounts() {
 		return discounts;
 	}
 	public void setDiscounts(List<Discount> discounts) {
 		this.discounts = discounts;
+	}
+	public List<Post> getPost() {
+		return post;
+	}
+	public void setPost(List<Post> post) {
+		this.post = post;
 	}
 }

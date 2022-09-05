@@ -1,5 +1,6 @@
 package com.server.kltn.motel.entity;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -12,10 +13,10 @@ import javax.persistence.Table;
 @Table(name = "video")
 public class Video {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	private String source;
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="post_id")
 	private Post post;
 	public Post getPost() {
@@ -38,5 +39,10 @@ public class Video {
 	}
 	public Video() {
 		super();
+	}
+	public Video(String source, Post post) {
+		super();
+		this.source = source;
+		this.post=post;
 	}
 }

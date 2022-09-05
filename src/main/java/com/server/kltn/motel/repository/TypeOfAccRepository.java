@@ -12,4 +12,5 @@ import com.server.kltn.motel.entity.TypeOfAcc;
 public interface TypeOfAccRepository extends JpaRepository<TypeOfAcc, Long>{
 	@Query("select a from TypeOfAcc a")
 	List<TypeOfAcc> getAll();
+	List<TypeOfAcc> findByIdIn(List<Long> ids);
 }

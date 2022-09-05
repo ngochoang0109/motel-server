@@ -1,7 +1,6 @@
 package com.server.kltn.motel.entity;
 
-import java.security.KeyStore.PrivateKeyEntry;
-
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -14,11 +13,14 @@ import javax.persistence.Table;
 @Table(name = "accomodation")
 public class Accomodation {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
-	private String address;
-	private String area;
-	private String price;
+	private String province;
+	private String dicstrict;
+	private String ward;
+	private String street;
+	private int area;
+	private long price;
 	private int numOfBed;
 	private int numOfToilet;
 	private int numOfFloor;
@@ -48,7 +50,7 @@ public class Accomodation {
 		this.heater = heater;
 	}
 	private String tower;
-	@OneToOne(mappedBy = "expense")
+	@OneToOne(mappedBy = "expense",cascade = CascadeType.ALL)
     private Post post;
 	@OneToOne
     @JoinColumn(name="type")
@@ -59,22 +61,64 @@ public class Accomodation {
 	public void setId(long id) {
 		this.id = id;
 	}
-	public String getAddress() {
-		return address;
+	
+	public String getProvince() {
+		return province;
 	}
-	public void setAddress(String address) {
-		this.address = address;
+	public void setProvince(String province) {
+		this.province = province;
 	}
-	public String getArea() {
+	public String getDicstrict() {
+		return dicstrict;
+	}
+	public void setDicstrict(String dicstrict) {
+		this.dicstrict = dicstrict;
+	}
+	public String getWard() {
+		return ward;
+	}
+	public void setWard(String ward) {
+		this.ward = ward;
+	}
+	public String getStreet() {
+		return street;
+	}
+	public void setStreet(String street) {
+		this.street = street;
+	}
+	public Accomodation(String province, String dicstrict, String ward, String street, int area, long price,
+			int numOfBed, int numOfToilet, int numOfFloor, int floorNumber, String furniture, boolean internet,
+			boolean parking, boolean balcony, boolean airConditioner, boolean heater, String tower) {
+		super();
+		this.province = province;
+		this.dicstrict = dicstrict;
+		this.ward = ward;
+		this.street = street;
+		this.area = area;
+		this.price = price;
+		this.numOfBed = numOfBed;
+		this.numOfToilet = numOfToilet;
+		this.numOfFloor = numOfFloor;
+		this.floorNumber = floorNumber;
+		this.furniture = furniture;
+		this.internet = internet;
+		this.parking = parking;
+		this.balcony = balcony;
+		this.airConditioner = airConditioner;
+		this.heater = heater;
+		this.tower = tower;
+	}
+	
+	public int getArea() {
 		return area;
 	}
-	public void setArea(String area) {
+	public void setArea(int area) {
 		this.area = area;
 	}
-	public String getPrice() {
+	public long getPrice() {
 		return price;
 	}
-	public void setPrice(String price) {
+	public void setPrice(long price) {
 		this.price = price;
 	}
 	public int getNumOfBed() {
@@ -137,5 +181,7 @@ public class Accomodation {
 	public void setTypeOfAcc(TypeOfAcc typeOfAcc) {
 		this.typeOfAcc = typeOfAcc;
 	}
-	
+	public Accomodation() {
+		super();
+	}
 }

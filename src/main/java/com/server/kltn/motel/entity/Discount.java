@@ -19,7 +19,7 @@ import javax.persistence.Table;
 @Table(name = "discount")
 public class Discount {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	private String code;
 	private int percent;
