@@ -66,4 +66,8 @@ public class Image {
 	public void setType(String type) {
 		this.type = type;
 	}
+
+	public Image() {
+		super();
+	}
 }

@@ -73,7 +73,7 @@ public class PostNewsImpl implements PostNewsService {
 			post.setCreatedDate(handleDateCommon.getCurrentDateTime());
 			post.setStartedDate(handleDateCommon.convertStringDateToLocalDateTime(costCalculate.getStartedDate()));
 			LocalDateTime closedDate = handleDateCommon.convertStringDateToLocalDateTime(costCalculate.getStartedDate())
-					.plusDays(costCalculate.getNumDatePos());
+					.plusDays(costCalculate.getNumDatePost());
 			post.setClosedDate(closedDate);
 			
 			List<Expense> expenses= expenseRepository.findByIdIn(new ArrayList<Long>(Arrays.asList(newsInfor.getTypeOfPost())));
@@ -83,6 +83,7 @@ public class PostNewsImpl implements PostNewsService {
 			post.setUser(user);
 			post.setStatus(0);
 			post.setApprovedDate(null);
+			post.setIsPayment(false);
 			
 			// set Accomodation Object
 			Accomodation accomodation = postNewsMapper.mapAccomodationInforToAccomodation(accomodationInfor);
