@@ -78,4 +78,76 @@ public interface PostRepository extends JpaRepository<Post, Long>{
 			+ " WHERE p.user.username=:username and"
 			+ " p.status=3")
 	Page<Post> getNewsHiddenOfUser(Pageable pageable, @Param("username") String username);
+	
+	@Query("SELECT p"
+			+ " FROM Post p"
+			+ " WHERE p.user.username=:username and"
+			+ " (p.title like %:textSearch%  or p.id like %:textSearch% )")
+	Page<Post> getNewsByTextSearch(Pageable pageable,@Param("username") String username, @Param("textSearch") String textSearch);
+	
+	@Query("SELECT p"
+			+ " FROM Post p"
+			+ " WHERE p.user.username=:username and"
+			+ " p.status=0 and"
+			+ " (p.title like %:textSearch%  or p.id like %:textSearch% )")
+	Page<Post> getNewsWaitApprovedByTextSearch(Pageable pageable,@Param("username") String username, 
+												@Param("textSearch") String textSearch);
+	
+	@Query("SELECT p"
+			+ " FROM Post p"
+			+ " WHERE p.user.username=:username and"
+			+ " p.status=2 and"
+			+ " (p.title like %:textSearch%  or p.id like %:textSearch% )")
+	Page<Post> getNewsRejectByTextSearch(Pageable pageable,@Param("username") String username, 
+												@Param("textSearch") String textSearch);
+	
+	@Query("SELECT p"
+			+ " FROM Post p"
+			+ " WHERE p.user.username=:username and"
+			+ " p.status=1 and"
+			+ " p.isPayment=false and"
+			+ " (p.title like %:textSearch%  or p.id like %:textSearch% )")
+	Page<Post> getNewsWaitPaymentByTextSearch(Pageable pageable,@Param("username") String username, 
+												@Param("textSearch") String textSearch);
+	
+	@Query("SELECT p"
+			+ " FROM Post p"
+			+ " WHERE p.user.username=:username and"
+			+ " p.status=1 and"
+			+ " p.isPayment=true and"
+			+ " p.startedDate>:currentDate and"
+			+ " (p.title like %:textSearch%  or p.id like %:textSearch% )")
+	Page<Post> getNewsWaitShowByTextSearch(Pageable pageable,@Param("username") String username, 
+												@Param("textSearch") String textSearch, 
+												@Param("currentDate") LocalDateTime currentDate);
+	
+	@Query("SELECT p"
+			+ " FROM Post p"
+			+ " WHERE p.user.username=:username and"
+			+ " p.status=1 and"
+			+ " p.isPayment=true and"
+			+ " p.startedDate<=:currentDate and"
+			+ " p.closedDate >= :currentDate and"
+			+ " (p.title like %:textSearch%  or p.id like %:textSearch% )")
+	Page<Post> getNewsShowByTextSearch(Pageable pageable,@Param("username") String username, 
+												@Param("textSearch") String textSearch, 
+												@Param("currentDate") LocalDateTime currentDate);
+	
+	@Query("SELECT p"
+			+ " FROM Post p"
+			+ " WHERE p.user.username=:username and"
+			+ " p.status=3 and"
+			+ " (p.title like %:textSearch%  or p.id like %:textSearch% )")
+	Page<Post> getNewsHiddenByTextSearch(Pageable pageable,@Param("username") String username, 
+												@Param("textSearch") String textSearch);
+	
+	@Query("SELECT p"
+			+ " FROM Post p"
+			+ " WHERE p.user.username=:username and"
+			+ " p.status=1 and"
+			+ " p.isPayment=true and"
+			+ " p.closedDate < :currentDate and"
+			+ " (p.title like %:textSearch%  or p.id like %:textSearch% )")
+	Page<Post> getNewsExpriedByTextSearch(Pageable pageable,@Param("username") String username, 
+												@Param("textSearch") String textSearch, @Param("currentDate") LocalDateTime currentDate);
 }

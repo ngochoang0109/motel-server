@@ -63,4 +63,7 @@ public class Page<T> {
 		this.last = last;
 		this.first = first;
 	}
+	public Page() {
+		super();
+	}
 }

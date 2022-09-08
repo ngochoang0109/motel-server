@@ -8,4 +8,5 @@ public class NewsModeConstant {
 	public static final String SHOWING="SHOWING";
 	public static final String HINDDEN="HINDDEN";
 	public static final String EXPRIED="EXPRIED";
+	public static final String NEWS_ALL="NEWS_ALL";
 }

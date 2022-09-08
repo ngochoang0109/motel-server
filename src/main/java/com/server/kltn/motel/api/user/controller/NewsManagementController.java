@@ -17,7 +17,7 @@ import com.server.kltn.motel.service.NewsManagementService;
 
 @RestController
 @RequestMapping("/api")
-public class NewsManagement {
+public class NewsManagementController {
 	
 	@Autowired
 	private NewsManagementService newsManagementService;
@@ -115,6 +115,21 @@ public class NewsManagement {
 			@RequestParam(value = "mode", defaultValue = PageAndSortConstant.MODE, required = false) int mode,
 			Authentication authentication){
 		Page<NewsCard> posts= newsManagementService.getNewsExpriedOfUser(pageNo, pageSize, field, mode, authentication.getName());
+		return new ResponseEntity<Page<NewsCard>>(posts, HttpStatus.OK);
+	}
+	
+	@GetMapping(value = "/news-management/get-news-text-search")
+	@PreAuthorize("hasRole('ROLE_USER')"+"||"+"hasRole('ROLE_ADMIN')")
+	public ResponseEntity<Page<NewsCard>> getNewsByTextSearch(
+			@RequestParam(value = "pageNo", defaultValue = PageAndSortConstant.PAGE_NO, required = false) int pageNo, 
+			@RequestParam(value = "pageSize", defaultValue = PageAndSortConstant.PAGE_SIZE, required = false) int pageSize,
+			@RequestParam(value = "sort", defaultValue = PageAndSortConstant.SORT, required = false) String field,
+			@RequestParam(value = "mode", defaultValue = PageAndSortConstant.MODE, required = false) int mode,
+			@RequestParam(value = "status") String status,
+			@RequestParam(value = "textSearch") String textSearch,
+			Authentication authentication){
+		Page<NewsCard> posts= newsManagementService.getNewsByTextSearch(pageNo, pageSize, field, mode, 
+																		authentication.getName(), status, textSearch);
 		return new ResponseEntity<Page<NewsCard>>(posts, HttpStatus.OK);
 	}
 }

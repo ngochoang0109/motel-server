@@ -12,4 +12,6 @@ public interface NewsManagementService {
 	Page<NewsCard> getNewsShowingOfUser(int pageNo, int pageSize, String field, int mode, String username);
 	Page<NewsCard> getNewsExpriedOfUser(int pageNo, int pageSize, String field, int mode, String username);
 	Page<NewsCard> getNewsHiddenOfUser(int pageNo, int pageSize, String field, int mode, String username);
+	Page<NewsCard> getNewsByTextSearch(int pageNo, int pageSize, String field, int mode,
+										String username, String status,String textSearch);
 }
