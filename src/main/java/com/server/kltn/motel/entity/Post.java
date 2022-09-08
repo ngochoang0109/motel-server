@@ -41,7 +41,7 @@ public class Post {
 	private LocalDateTime closedDate;
 	private LocalDateTime updatedDate;
 	private LocalDateTime approvedDate;
-	private boolean rePost;
+	private boolean isPayment;
 	private long totalAmount;
 
 	public long getTotalAmount() {
@@ -139,12 +139,12 @@ public class Post {
 		this.approvedDate = approvedDate;
 	}
 
-	public boolean isRePost() {
-		return rePost;
+	public boolean isPayment() {
+		return isPayment;
 	}
 
-	public void setRePost(boolean rePost) {
-		this.rePost = rePost;
+	public void setIsPayment(boolean isPayment) {
+		this.isPayment = isPayment;
 	}
 
 	public List<Image> getImages() {

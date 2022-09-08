@@ -10,7 +10,6 @@ import com.server.kltn.motel.api.user.payload.NewsInfor;
 import com.server.kltn.motel.entity.Accomodation;
 import com.server.kltn.motel.entity.Image;
 import com.server.kltn.motel.entity.Post;
-import com.server.kltn.motel.entity.Video;
 
 @Component
 public class PostNewsMapper {

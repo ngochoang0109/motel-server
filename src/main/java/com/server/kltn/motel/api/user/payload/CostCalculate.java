@@ -2,7 +2,7 @@ package com.server.kltn.motel.api.user.payload;
 
 public class CostCalculate {
 	private long typeOfPost;
-	private long numDatePos;
+	private long numDatePost;
 	private String startedDate;
 	private String discount;
 	public long getTypeOfPost() {
@@ -11,11 +11,11 @@ public class CostCalculate {
 	public void setTypeOfPost(long typeOfPost) {
 		this.typeOfPost = typeOfPost;
 	}
-	public long getNumDatePos() {
-		return numDatePos;
+	public long getNumDatePost() {
+		return numDatePost;
 	}
-	public void setNumDatePos(long numDatePos) {
-		this.numDatePos = numDatePos;
+	public void setNumDatePost(long numDatePos) {
+		this.numDatePost = numDatePos;
 	}
 	public String getStartedDate() {
 		return startedDate;

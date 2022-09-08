@@ -6,6 +6,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -50,9 +52,9 @@ public class Accomodation {
 		this.heater = heater;
 	}
 	private String tower;
-	@OneToOne(mappedBy = "expense",cascade = CascadeType.ALL)
+	@OneToOne(mappedBy = "accomodation",cascade = CascadeType.ALL)
     private Post post;
-	@OneToOne
+	@ManyToOne
     @JoinColumn(name="type")
     private TypeOfAcc typeOfAcc;
 	public long getId() {
