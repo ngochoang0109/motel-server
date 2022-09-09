@@ -31,8 +31,8 @@ public class Discount {
 	@ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
     @JoinTable(
         name = "exp_dis", 
-        joinColumns = {@JoinColumn(name="exp_id")},
-        inverseJoinColumns = {@JoinColumn(name="dis_id")}
+        joinColumns = {@JoinColumn(name="dis_id")},
+        inverseJoinColumns = {@JoinColumn(name="exp_id")}
     )
     private List<Expense> expenses = new ArrayList<>();
 	public String getDescription() {
