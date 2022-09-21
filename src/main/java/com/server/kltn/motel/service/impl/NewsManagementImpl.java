@@ -1,5 +1,6 @@
 package com.server.kltn.motel.service.impl;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.server.kltn.motel.api.user.payload.FilterParam;
 import com.server.kltn.motel.api.user.payload.NewsCard;
 import com.server.kltn.motel.common.HandleDateCommon;
 import com.server.kltn.motel.common.PageAndSortCommon;
@@ -161,23 +163,25 @@ public class NewsManagementImpl implements NewsManagementService {
 
 	@Override
 	public Page<NewsCard> getNewsByTextSearch(int pageNo, int pageSize, String field, int mode, String username,
-			String status, String textSearch) {
+			String status, String textSearch, FilterParam filterForm) {
+//		LocalDateTime startDateTime= handleDateCommon.convertStringDateToLocalDateTime(filterForm.getStartedDate());
+//		LocalDateTime closeDateTime= handleDateCommon.convertStringDateToLocalDateTime(filterForm.getClosedDate());
 		Pageable pageable = pageAndSortCommon.getPageable(pageNo, pageSize, field, mode);
 		org.springframework.data.domain.Page<Post> page = org.springframework.data.domain.Page.empty();
 		List<NewsCard> newsCards = new ArrayList<>();
 		switch (status) {
-			case NewsModeConstant.WAITING_APROVED:
-				page = postRepository.getNewsWaitApprovedByTextSearch(pageable, username, textSearch);
-				newsCards = postMapper.mapPostsToNewsCards(page.getContent());
-				for (int i = 0; i < page.getContent().size(); i++) {
+		case NewsModeConstant.WAITING_APROVED:
+			page = postRepository.getNewsWaitApprovedByTextSearch(pageable, username, textSearch);
+			newsCards = postMapper.mapPostsToNewsCards(page.getContent());
+			for (int i = 0; i < page.getContent().size(); i++) {
 				newsCards.get(i).setMode(NewsModeConstant.WAITING_APROVED);
-				}
-				break;
-			case NewsModeConstant.NEWS_REJECT:
-				page = postRepository.getNewsRejectByTextSearch(pageable, username, textSearch);
-				newsCards = postMapper.mapPostsToNewsCards(page.getContent());
-				for (int i = 0; i < page.getContent().size(); i++) {
-					newsCards.get(i).setMode(NewsModeConstant.NEWS_REJECT);
+			}
+			break;
+		case NewsModeConstant.NEWS_REJECT:
+			page = postRepository.getNewsRejectByTextSearch(pageable, username, textSearch);
+			newsCards = postMapper.mapPostsToNewsCards(page.getContent());
+			for (int i = 0; i < page.getContent().size(); i++) {
+				newsCards.get(i).setMode(NewsModeConstant.NEWS_REJECT);
 			}
 			break;
 		case NewsModeConstant.NEWS_WAIT_PAYMENT:
@@ -189,14 +193,16 @@ public class NewsManagementImpl implements NewsManagementService {
 			}
 			break;
 		case NewsModeConstant.WAITING_SHOW:
-			page = postRepository.getNewsWaitShowByTextSearch(pageable, username, textSearch, handleDateCommon.getCurrentDateTime());
+			page = postRepository.getNewsWaitShowByTextSearch(pageable, username, textSearch,
+					handleDateCommon.getCurrentDateTime());
 			newsCards = postMapper.mapPostsToNewsCards(page.getContent());
 			for (int i = 0; i < page.getContent().size(); i++) {
 				newsCards.get(i).setMode(NewsModeConstant.WAITING_SHOW);
 			}
 			break;
 		case NewsModeConstant.SHOWING:
-			page = postRepository.getNewsShowByTextSearch(pageable, username, textSearch, handleDateCommon.getCurrentDateTime());
+			page = postRepository.getNewsShowByTextSearch(pageable, username, textSearch,
+					handleDateCommon.getCurrentDateTime());
 			newsCards = postMapper.mapPostsToNewsCards(page.getContent());
 			for (int i = 0; i < page.getContent().size(); i++) {
 				newsCards.get(i).setMode(NewsModeConstant.SHOWING);
@@ -210,7 +216,8 @@ public class NewsManagementImpl implements NewsManagementService {
 			}
 			break;
 		case NewsModeConstant.EXPRIED:
-			page = postRepository.getNewsExpriedByTextSearch(pageable, username, textSearch, handleDateCommon.getCurrentDateTime());
+			page = postRepository.getNewsExpriedByTextSearch(pageable, username, textSearch,
+					handleDateCommon.getCurrentDateTime());
 			newsCards = postMapper.mapPostsToNewsCards(page.getContent());
 			for (int i = 0; i < page.getContent().size(); i++) {
 				newsCards.get(i).setMode(NewsModeConstant.EXPRIED);

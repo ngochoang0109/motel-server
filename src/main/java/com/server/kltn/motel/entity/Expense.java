@@ -20,7 +20,7 @@ public class Expense {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	private String type;
-	private long cost;
+	private Long cost;
 	@OneToMany(mappedBy = "expense", fetch = FetchType.LAZY)
     private List<Post> post= new ArrayList<>();
 	

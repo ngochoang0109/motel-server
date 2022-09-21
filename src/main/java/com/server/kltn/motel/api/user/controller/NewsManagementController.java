@@ -6,10 +6,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.server.kltn.motel.api.user.payload.FilterParam;
 import com.server.kltn.motel.api.user.payload.NewsCard;
 import com.server.kltn.motel.constant.PageAndSortConstant;
 import com.server.kltn.motel.page.Page;
@@ -127,9 +129,10 @@ public class NewsManagementController {
 			@RequestParam(value = "mode", defaultValue = PageAndSortConstant.MODE, required = false) int mode,
 			@RequestParam(value = "status") String status,
 			@RequestParam(value = "textSearch") String textSearch,
+			@RequestBody(required = false) FilterParam filterParam,
 			Authentication authentication){
 		Page<NewsCard> posts= newsManagementService.getNewsByTextSearch(pageNo, pageSize, field, mode, 
-																		authentication.getName(), status, textSearch);
+																		authentication.getName(), status, textSearch, filterParam);
 		return new ResponseEntity<Page<NewsCard>>(posts, HttpStatus.OK);
 	}
 }
