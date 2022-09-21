@@ -1,5 +1,6 @@
 package com.server.kltn.motel.service;
 
+import com.server.kltn.motel.api.user.payload.FilterParam;
 import com.server.kltn.motel.api.user.payload.NewsCard;
 import com.server.kltn.motel.page.Page;
 
@@ -13,5 +14,5 @@ public interface NewsManagementService {
 	Page<NewsCard> getNewsExpriedOfUser(int pageNo, int pageSize, String field, int mode, String username);
 	Page<NewsCard> getNewsHiddenOfUser(int pageNo, int pageSize, String field, int mode, String username);
 	Page<NewsCard> getNewsByTextSearch(int pageNo, int pageSize, String field, int mode,
-										String username, String status,String textSearch);
+										String username, String status,String textSearch, FilterParam filterForm);
 }
