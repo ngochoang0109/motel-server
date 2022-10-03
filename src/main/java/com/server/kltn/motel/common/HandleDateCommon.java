@@ -11,8 +11,8 @@ import com.server.kltn.motel.constant.DateTimeConstant;
 public class HandleDateCommon {
 	public LocalDateTime getCurrentDateTime() {
 		LocalDateTime currentTime= LocalDateTime.now();
-		LocalDateTime returnValueDateTime= currentTime.plusHours(DateTimeConstant.UtcTimeZoneVN);
-		return returnValueDateTime;
+//		LocalDateTime returnValueDateTime= currentTime.plusHours(DateTimeConstant.UtcTimeZoneVN);
+		return currentTime;
 	}
 	
 	public LocalDateTime convertStringDateToLocalDateTime(String strDate) {
