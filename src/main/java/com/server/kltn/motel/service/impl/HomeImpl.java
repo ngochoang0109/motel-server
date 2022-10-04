@@ -8,13 +8,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.server.kltn.motel.api.user.payload.CountNews;
 import com.server.kltn.motel.api.user.payload.NewsCard;
 import com.server.kltn.motel.api.user.payload.SearchParam;
 import com.server.kltn.motel.common.HandleDateCommon;
 import com.server.kltn.motel.common.PageAndSortCommon;
+import com.server.kltn.motel.entity.Accomodation;
 import com.server.kltn.motel.entity.Post;
 import com.server.kltn.motel.mapper.PostMapper;
 import com.server.kltn.motel.page.Page;
+import com.server.kltn.motel.repository.AccomodationRepo;
 import com.server.kltn.motel.repository.PostRepository;
 import com.server.kltn.motel.sepecification.SearchSepecification;
 import com.server.kltn.motel.service.HomeService;
@@ -35,6 +38,9 @@ public class HomeImpl implements HomeService{
 	private SearchSepecification searchSepecification;
 	
 	private StringBuilder sb= new StringBuilder("accomodation.");
+	
+	@Autowired
+	private AccomodationRepo accomodationRepo;
 	
 	@Override
 	public Page<NewsCard> getPageNewsCard(int pageNo, int pageSize, String field, int mode) {
@@ -93,5 +99,11 @@ public class HomeImpl implements HomeService{
 				posts.getNumber(), posts.getSize(), posts.getTotalElements(), 
 				posts.getTotalPages(), posts.isLast(), posts.isFirst());
 		return paging;
+	}
+	
+	@Override
+	public List<CountNews> getCountByProvince() {
+		List<CountNews> getCount= accomodationRepo.countByProvince(handleDateCommon.getCurrentDateTime());
+		return getCount;
 	}
 }

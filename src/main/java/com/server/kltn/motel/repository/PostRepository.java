@@ -162,8 +162,4 @@ public interface PostRepository extends JpaRepository<Post, Long>, JpaSpecificat
 			+ " (p.title like %:textSearch%  or p.id like %:textSearch% )")
 	Page<Post> getNewsExpriedByTextSearch(Pageable pageable,@Param("username") String username, 
 												@Param("textSearch") String textSearch, @Param("currentDate") LocalDateTime currentDate);
-	
-//	@Query(" SELECT p "
-//			+ " FROM Post p ")
-//	Page<Post> findAll(Pageable pageable,Specification<Post> searchCriterial);
 }

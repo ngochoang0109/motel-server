@@ -1,5 +1,7 @@
 package com.server.kltn.motel.api.user.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.server.kltn.motel.api.user.payload.CountNews;
 import com.server.kltn.motel.api.user.payload.NewsCard;
 import com.server.kltn.motel.api.user.payload.SearchParam;
 import com.server.kltn.motel.constant.PageAndSortConstant;
@@ -67,5 +70,10 @@ public class HomeController {
 		searchParam.setAreaTo(areaTo);
 		Page<NewsCard> posts= homeService.searchPageCard(pageNo, pageSize, field, mode, searchParam);
 		return new ResponseEntity<Page<NewsCard>>(posts, HttpStatus.OK);
+	}
+	
+	@GetMapping(value = "/auth/menu-news/total-news-province")
+	public ResponseEntity<List<CountNews>> getTotalNewsOfProvince(){
+		return new ResponseEntity<List<CountNews>>(homeService.getCountByProvince(), HttpStatus.OK);
 	}
 }
