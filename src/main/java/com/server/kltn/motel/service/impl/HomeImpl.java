@@ -13,7 +13,6 @@ import com.server.kltn.motel.api.user.payload.NewsCard;
 import com.server.kltn.motel.api.user.payload.SearchParam;
 import com.server.kltn.motel.common.HandleDateCommon;
 import com.server.kltn.motel.common.PageAndSortCommon;
-import com.server.kltn.motel.entity.Accomodation;
 import com.server.kltn.motel.entity.Post;
 import com.server.kltn.motel.mapper.PostMapper;
 import com.server.kltn.motel.page.Page;
@@ -72,9 +71,9 @@ public class HomeImpl implements HomeService{
 		Comparator<Post> priority=(post1, post2)->{
 			return Long.compare(post2.getExpense().getCost(), post1.getExpense().getCost());
 		};
-		Comparator<Post> sortDate=(post1, post2)->{
-			return post1.getStartedDate().compareTo(post2.getStartedDate());
-		};
+//		Comparator<Post> sortDate=(post1, post2)->{
+//			return post1.getStartedDate().compareTo(post2.getStartedDate());
+//		};
 //		sortDate.thenComparing(priority)
 		List<Post> postSorted= posts.stream()
 								.sorted(priority)

@@ -8,4 +8,5 @@ public interface DiscountManagementService {
 	String generatedCodeDiscount();
 	DiscountDatasource createDiscount(DiscountDatasource discountDatasource);
 	List<DiscountDatasource> getDiscountOfExpense(Long expenseId);
+	List<DiscountDatasource> getAllDiscount();
 }

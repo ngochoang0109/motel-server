@@ -5,8 +5,6 @@ import java.time.format.DateTimeFormatter;
 
 import org.springframework.stereotype.Component;
 
-import com.server.kltn.motel.constant.DateTimeConstant;
-
 @Component
 public class HandleDateCommon {
 	public LocalDateTime getCurrentDateTime() {

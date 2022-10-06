@@ -50,6 +50,7 @@ public class AuthenServiceImpl implements AuthenService{
 		user.setCreateDate(new HandleDateCommon().getCurrentDateTime());
 		List<Role> roles= new ArrayList<>();
 		roles.add(new Role(1,"ROLE_USER"));
+//		roles.add(new Role(2,"ROLE_ADMIN"));
 		user.setRoles(roles);
 		try {
 			userRepository.save(user);
