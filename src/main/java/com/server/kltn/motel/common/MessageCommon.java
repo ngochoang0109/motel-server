@@ -21,6 +21,4 @@ public class MessageCommon{
 		this.status = status;
 		this.message = message;
 	}
-
-	
 }

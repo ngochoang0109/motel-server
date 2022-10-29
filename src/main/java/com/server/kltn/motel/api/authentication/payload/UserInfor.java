@@ -1,16 +1,25 @@
-package com.server.kltn.motel.api.user.payload;
+package com.server.kltn.motel.api.authentication.payload;
 
 public class UserInfor {
+	
 	private long id;
+	private String username;
 	private String fullname;
 	private String phone;
 	private String address;
-	private String email;
+	private String avartar;
+	
 	public long getId() {
 		return id;
 	}
 	public void setId(long id) {
 		this.id = id;
+	}
+	public String getUsername() {
+		return username;
+	}
+	public void setUsername(String username) {
+		this.username = username;
 	}
 	public String getFullname() {
 		return fullname;
@@ -30,17 +39,10 @@ public class UserInfor {
 	public void setAddress(String address) {
 		this.address = address;
 	}
-	public String getEmail() {
-		return email;
+	public String getAvartar() {
+		return avartar;
 	}
-	public void setEmail(String email) {
-		this.email = email;
-	}
-	public UserInfor(String fullname, String phone, String address, String email) {
-		super();
-		this.fullname = fullname;
-		this.phone = phone;
-		this.address = address;
-		this.email = email;
+	public void setAvartar(String avartar) {
+		this.avartar = avartar;
 	}
 }

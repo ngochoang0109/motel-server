@@ -46,6 +46,21 @@ public class User {
 	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
 	List<Post> posts= new ArrayList<>();
 	
+	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+	List<Payment> payments= new ArrayList<>();
+	
+	public List<Post> getPosts() {
+		return posts;
+	}
+	public void setPosts(List<Post> posts) {
+		this.posts = posts;
+	}
+	public List<Payment> getPayments() {
+		return payments;
+	}
+	public void setPayments(List<Payment> payments) {
+		this.payments = payments;
+	}
 	public Image getAvatar() {
 		return avatar;
 	}

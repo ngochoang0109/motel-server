@@ -9,7 +9,7 @@ import org.springframework.web.context.request.WebRequest;
 import com.server.kltn.motel.common.MessageCommon;
 
 @ControllerAdvice
-public class ExceptionController {
+public class ExceptionController<T> {
 	@ExceptionHandler(BadRequestException.class)
 	public ResponseEntity<MessageCommon> handlerBadRequestException(BadRequestException badRequestException){
 		MessageCommon message= new MessageCommon(false,badRequestException.getMessage());

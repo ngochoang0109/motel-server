@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -35,6 +36,10 @@ public class Discount {
         inverseJoinColumns = {@JoinColumn(name="exp_id")}
     )
     private List<Expense> expenses = new ArrayList<>();
+	
+	@OneToMany(mappedBy = "discount", fetch = FetchType.LAZY)
+    private List<Post> post= new ArrayList<>();
+	
 	public String getDescription() {
 		return description;
 	}

@@ -1,5 +1,9 @@
 package com.server.kltn.motel.service;
 
+import java.util.List;
+
+import com.server.kltn.motel.api.admin.payload.RejectDatasource;
+import com.server.kltn.motel.api.user.payload.Cart;
 import com.server.kltn.motel.api.user.payload.FilterParam;
 import com.server.kltn.motel.api.user.payload.NewsCard;
 import com.server.kltn.motel.page.Page;
@@ -15,5 +19,11 @@ public interface NewsManagementService {
 	Page<NewsCard> getNewsHiddenOfUser(int pageNo, int pageSize, String field, int mode, String username);
 	Page<NewsCard> getNewsByTextSearch(int pageNo, int pageSize, String field, int mode,
 										String username, String status,String textSearch, FilterParam filterForm);
-	Page<NewsCard> getNewsByStatus(int pageNo, int pageSize, String field, int mode, String status);
+	List<NewsCard> getNewsByStatus(String mode);
+	Boolean approvedNews(long id);
+	Boolean rejectedNews(long id);
+	Boolean insertReason(RejectDatasource rejectDatasource);
+	String selReason(long id);
+	Cart addNewsToCart(long idNews, String username);
+	Cart getCart(String username);
 }

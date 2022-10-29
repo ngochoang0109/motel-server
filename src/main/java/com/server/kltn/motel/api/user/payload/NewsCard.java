@@ -116,4 +116,7 @@ public class NewsCard {
 		this.startedDate=startedDate;
 		this.closedDate=closedDate;
 	}
+	public NewsCard() {
+		super();
+	}
 }

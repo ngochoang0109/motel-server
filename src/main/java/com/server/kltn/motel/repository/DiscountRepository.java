@@ -11,4 +11,7 @@ import com.server.kltn.motel.entity.Discount;
 public interface DiscountRepository extends JpaRepository<Discount, Long>{
 	@Query("select count(d)>0 from Discount d where code= :code")
 	boolean checkGeneratedCodeExists( @Param("code") String code);
+	
+	@Query("select d from Discount d where code= :code")
+	Discount getByCode( @Param("code") String code);
 }

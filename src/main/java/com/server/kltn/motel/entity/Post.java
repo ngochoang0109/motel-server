@@ -28,7 +28,9 @@ public class Post {
 	@Lob
 	@Column(length =100000)
 	private String description;
-
+	@Lob
+	@Column(length =100000)
+	private String reason;
 	/*
 	 * 0: wait for approved 1: approved 2: rejected 3: closed
 	 */
@@ -60,12 +62,33 @@ public class Post {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "expense_id")
 	private Expense expense;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "discount_id")
+	private Discount discount;
+	
 	@OneToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	@JoinColumn(name = "accomodation_id")
 	private Accomodation accomodation;
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id")
 	private User user;
+	
+	@OneToMany(mappedBy = "post",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	List<PaymentDetail> paymentDetails = new ArrayList<>();
+
+	public String getReason() {
+		return reason;
+	}
+
+	public void setReason(String reason) {
+		this.reason = reason;
+	}
+
+	public void setPayment(boolean isPayment) {
+		this.isPayment = isPayment;
+	}
 
 	public LocalDateTime getStartedDate() {
 		return startedDate;
@@ -198,4 +221,19 @@ public class Post {
 		this.user = user;
 	}
 
+	public List<PaymentDetail> getPaymentDetails() {
+		return paymentDetails;
+	}
+
+	public void setPaymentDetails(List<PaymentDetail> paymentDetails) {
+		this.paymentDetails = paymentDetails;
+	}
+
+	public Discount getDiscount() {
+		return discount;
+	}
+
+	public void setDiscount(Discount discount) {
+		this.discount = discount;
+	}
 }

@@ -160,5 +160,8 @@ public interface PostRepository extends JpaRepository<Post, Long>, JpaSpecificat
 			+ " p.closedDate < :currentDate and"
 			+ " (p.title like %:textSearch%  or p.id like %:textSearch% )")
 	Page<Post> getNewsExpriedByTextSearch(Pageable pageable,@Param("username") String username, 
-												@Param("textSearch") String textSearch, @Param("currentDate") LocalDateTime currentDate);
+												@Param("textSearch") String textSearch, 
+												@Param("currentDate") LocalDateTime currentDate);
+	
+	
 }

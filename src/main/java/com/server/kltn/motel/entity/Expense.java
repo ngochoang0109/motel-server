@@ -30,7 +30,7 @@ public class Expense {
 		this.type = type;
 		this.cost = cost;
 	}
-	@ManyToMany(cascade = { CascadeType.ALL },mappedBy = "expenses")
+	@ManyToMany(cascade = { CascadeType.ALL },mappedBy = "expenses", fetch = FetchType.EAGER)
     private List<Discount> discounts = new ArrayList<>();
 	
 	public Expense() {

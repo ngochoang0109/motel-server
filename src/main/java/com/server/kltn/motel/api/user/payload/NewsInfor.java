@@ -5,11 +5,18 @@ import java.util.List;
 
 public class NewsInfor {
 	private long expense;
+	private String discount;
 	private String title;
 	private String	description;
 	private List<String> videos= new ArrayList<>();
 	private long totalAmount;
 	
+	public String getDiscount() {
+		return discount;
+	}
+	public void setDiscount(String discount) {
+		this.discount = discount;
+	}
 	public long getTypeOfPost() {
 		return expense;
 	}

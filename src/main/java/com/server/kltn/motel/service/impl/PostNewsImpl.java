@@ -16,6 +16,7 @@ import com.server.kltn.motel.api.user.payload.NewsInfor;
 import com.server.kltn.motel.common.AwsS3Common;
 import com.server.kltn.motel.common.HandleDateCommon;
 import com.server.kltn.motel.entity.Accomodation;
+import com.server.kltn.motel.entity.Discount;
 import com.server.kltn.motel.entity.Expense;
 import com.server.kltn.motel.entity.Image;
 import com.server.kltn.motel.entity.Post;
@@ -25,6 +26,7 @@ import com.server.kltn.motel.entity.Video;
 import com.server.kltn.motel.exception.ResourceNotFoundException;
 import com.server.kltn.motel.exception.ServerException;
 import com.server.kltn.motel.mapper.PostNewsMapper;
+import com.server.kltn.motel.repository.DiscountRepository;
 import com.server.kltn.motel.repository.ExpenseRepository;
 import com.server.kltn.motel.repository.ImageRepository;
 import com.server.kltn.motel.repository.PostRepository;
@@ -63,6 +65,9 @@ public class PostNewsImpl implements PostNewsService {
 	@Autowired
 	private VideoRepository videoRepository;
 	
+	@Autowired
+	private DiscountRepository discountRepository;
+	
 	@Override
 	@Transactional
 	public void createNews(NewsInfor newsInfor, AccomodationInfor accomodationInfor, CostCalculate costCalculate,
@@ -76,8 +81,12 @@ public class PostNewsImpl implements PostNewsService {
 					.plusDays(costCalculate.getNumDatePost());
 			post.setClosedDate(closedDate);
 			
-			List<Expense> expenses= expenseRepository.findByIdIn(new ArrayList<Long>(Arrays.asList(newsInfor.getTypeOfPost())));
+			List<Expense> expenses= expenseRepository.findByIdIn(
+					new ArrayList<Long>(Arrays.asList(newsInfor.getTypeOfPost())));
 			post.setExpense(expenses.get(0));
+			
+			post.setDiscount(discountRepository.getByCode(newsInfor.getDiscount()));
+			
 			User user= userRepository.findByUsernameOrEmail(username,username)
 							.orElseThrow(() -> new ResourceNotFoundException("user", "username", username));
 			post.setUser(user);
