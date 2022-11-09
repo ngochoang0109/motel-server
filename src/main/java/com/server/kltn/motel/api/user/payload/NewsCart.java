@@ -2,11 +2,30 @@ package com.server.kltn.motel.api.user.payload;
 
 import com.server.kltn.motel.api.admin.payload.DiscountDatasource;
 import com.server.kltn.motel.api.admin.payload.ExpenseDatasource;
+import com.server.kltn.motel.entity.TypeOfAcc;
 
 public class NewsCart extends NewsCard{
 	
 	private ExpenseDatasource expenseDatasource;
 	private DiscountDatasource discountDatasource;
+	private TypeOfAcc typeOfAcc;
+	private int numDate;
+	
+	public int getNumDate() {
+		return this.numDate;
+	}
+
+	public void setNumDate(int numDate) {
+		this.numDate = numDate;
+	}
+
+	public TypeOfAcc getTypeOfAcc() {
+		return this.typeOfAcc;
+	}
+
+	public void setTypeOfAcc(TypeOfAcc typeOfAcc) {
+		this.typeOfAcc = typeOfAcc;
+	}
 	
 	public ExpenseDatasource getExpenseDatasource() {
 		return expenseDatasource;
@@ -24,7 +43,7 @@ public class NewsCart extends NewsCard{
 		super(newsCard.getId(), newsCard.getPhone(), newsCard.getFullName(), 
 				newsCard.getTitle(), newsCard.getDescription(), newsCard.getAvatar(),newsCard.getPrice(),
 				newsCard.getArea(), newsCard.getDistrict(), newsCard.getProvince(),newsCard.getStartedDate(), 
-				newsCard.getClosedDate());
+				newsCard.getClosedDate(), newsCard.getTotalAmount());
 	}
 	public NewsCart() {
 		super();

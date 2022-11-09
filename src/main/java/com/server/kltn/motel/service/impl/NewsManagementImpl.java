@@ -2,9 +2,6 @@ package com.server.kltn.motel.service.impl;
 
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -21,10 +18,8 @@ import com.server.kltn.motel.api.user.payload.FilterParam;
 import com.server.kltn.motel.api.user.payload.NewsCard;
 import com.server.kltn.motel.api.user.payload.NewsCart;
 import com.server.kltn.motel.common.HandleDateCommon;
-import com.server.kltn.motel.common.MessageCommon;
 import com.server.kltn.motel.common.PageAndSortCommon;
 import com.server.kltn.motel.constant.NewsModeConstant;
-import com.server.kltn.motel.entity.Discount;
 import com.server.kltn.motel.entity.Payment;
 import com.server.kltn.motel.entity.PaymentDetail;
 import com.server.kltn.motel.entity.Post;
@@ -36,6 +31,7 @@ import com.server.kltn.motel.mapper.PostMapper;
 import com.server.kltn.motel.page.Page;
 import com.server.kltn.motel.repository.PaymentRepo;
 import com.server.kltn.motel.repository.PostRepository;
+import com.server.kltn.motel.repository.TypeOfAccRepository;
 import com.server.kltn.motel.repository.UserRepository;
 import com.server.kltn.motel.service.NewsManagementService;
 
@@ -65,6 +61,9 @@ public class NewsManagementImpl implements NewsManagementService {
 
 	@Autowired
 	private DiscountMapper discountMapper;
+	
+	@Autowired
+	private TypeOfAccRepository typeOfAccRepository;
 
 	@Override
 	public Page<NewsCard> getAllNewsOfUser(int pageNo, int pageSize, String field, int mode, String username) {
@@ -429,7 +428,7 @@ public class NewsManagementImpl implements NewsManagementService {
 			if (paymentOptional.get().getPaymentDetails().stream()
 					.filter(pd -> pd.getPost().equals(post)).findFirst()
 					.isPresent()) {
-				throw new ServerException("Bài viết đã có trong giỏ");
+				throw new ServerException("Bài viết đã có trong giỏ tin");
 			}
 			paymentDetail.setPayment(paymentOptional.get());
 			paymentOptional.get().getPaymentDetails().add(paymentDetail);
@@ -457,6 +456,9 @@ public class NewsManagementImpl implements NewsManagementService {
 						expenseMapper.convertExpenseToExpenseDatasource(paymentDetail.getPost().getExpense()));
 				newsCart.setDiscountDatasource(
 						discountMapper.mapDiscountToDiscountDatasource(paymentDetail.getPost().getDiscount()));
+				newsCart.setTypeOfAcc(paymentDetail.getPost().getAccomodation().getTypeOfAcc());
+				newsCart.setNumDate(
+					(int)ChronoUnit.DAYS.between( paymentDetail.getPost().getStartedDate(),paymentDetail.getPost().getClosedDate() ));
 				newsCarts.add(newsCart);
 			}
 			cart.setTotalPriceOfCart(totalPriceOfCart);

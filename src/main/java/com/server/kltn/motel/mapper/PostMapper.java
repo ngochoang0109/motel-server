@@ -24,7 +24,7 @@ public class PostMapper {
 								post.getTitle(), post.getDescription(), sourceImg, 
 								post.getAccomodation().getPrice(), post.getAccomodation().getArea(), 
 								post.getAccomodation().getDicstrict(), post.getAccomodation().getProvince(), 
-								post.getStartedDate().toString(), post.getClosedDate().toString());
+								post.getStartedDate().toString(), post.getClosedDate().toString(), post.getTotalAmount());
 		return newsCard;
 	}
 	

@@ -27,9 +27,11 @@ public class UserServiceImpl implements UserService{
 		UserInfor userInfor= new UserInfor();
 		userInfor.setId(user.getId());
 		userInfor.setFullname(user.getFullname());
-		userInfor.setAddress(user.getAddress());
-		userInfor.setAvartar(user.getAvatar().getSource());
+		userInfor.setAddress(user.getAddress()==null?"Chưa cập nhật địa chỉ":user.getAddress());
+		userInfor.setAvartar(user.getAvatar()==null?"":user.getAvatar().getSource());
 		userInfor.setPhone(user.getPhone());
+		userInfor.setUsername(user.getUsername());
+		userInfor.setEmail(user.getEmail()==null?"Chưa cập nhật địa chỉ":user.getEmail());
 		return userInfor;
 	}
 }

@@ -16,7 +16,6 @@ import com.server.kltn.motel.api.user.payload.NewsInfor;
 import com.server.kltn.motel.common.AwsS3Common;
 import com.server.kltn.motel.common.HandleDateCommon;
 import com.server.kltn.motel.entity.Accomodation;
-import com.server.kltn.motel.entity.Discount;
 import com.server.kltn.motel.entity.Expense;
 import com.server.kltn.motel.entity.Image;
 import com.server.kltn.motel.entity.Post;

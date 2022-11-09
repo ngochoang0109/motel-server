@@ -101,7 +101,7 @@ public class NewsCard {
 		this.province = province;
 	}
 	public NewsCard(long id, String phone, String fullName, String title, String description, String avatar, long price,
-			int area, String district, String province, String startedDate, String closedDate) {
+			int area, String district, String province, String startedDate, String closedDate, long totalAmount) {
 		super();
 		this.id= id;
 		this.phone = phone;
@@ -115,6 +115,7 @@ public class NewsCard {
 		this.province = province;
 		this.startedDate=startedDate;
 		this.closedDate=closedDate;
+		this.totalAmount=totalAmount;
 	}
 	public NewsCard() {
 		super();
