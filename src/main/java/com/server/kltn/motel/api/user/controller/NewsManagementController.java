@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.server.kltn.motel.api.user.payload.Cart;
+import com.server.kltn.motel.api.user.payload.CartPayload;
 import com.server.kltn.motel.api.user.payload.FilterParam;
 import com.server.kltn.motel.api.user.payload.NewsCard;
 import com.server.kltn.motel.constant.PageAndSortConstant;
@@ -144,18 +144,18 @@ public class NewsManagementController {
 		return new ResponseEntity<Page<NewsCard>>(posts, HttpStatus.OK);
 	}
 
-	@PostMapping(value = "/news-management/add-item-to-cart")
-	@PreAuthorize("hasRole('ROLE_USER')")
-	public ResponseEntity<?> getNewsByTextSearch(@RequestParam(value = "idNews") int idNews,
-			Authentication authentication) {
-		Cart cart= newsManagementService.addNewsToCart(idNews, authentication.getName());
-		return new ResponseEntity<Cart>(cart, HttpStatus.OK);
-	}
-	
-	@GetMapping(value = "/news-management/get-cart")
-	@PreAuthorize("hasRole('ROLE_USER')"+"||" + "hasRole('ROLE_ADMIN')")
-	public ResponseEntity<?> getCartOfUser(Authentication authentication) {
-		Cart cart= newsManagementService.getCart(authentication.getName());
-		return new ResponseEntity<Cart>(cart, HttpStatus.OK);
-	}
+//	@PostMapping(value = "/news-management/add-item-to-cart")
+//	@PreAuthorize("hasRole('ROLE_USER')")
+//	public ResponseEntity<?> getNewsByTextSearch(@RequestParam(value = "idNews") int idNews,
+//			Authentication authentication) {
+//		CartPayload cart= newsManagementService.addNewsToCart(idNews, authentication.getName());
+//		return new ResponseEntity<CartPayload>(cart, HttpStatus.OK);
+//	}
+//	
+//	@GetMapping(value = "/news-management/get-cart")
+//	@PreAuthorize("hasRole('ROLE_USER')"+"||" + "hasRole('ROLE_ADMIN')")
+//	public ResponseEntity<?> getCartOfUser(Authentication authentication) {
+//		CartPayload cart= newsManagementService.getCart(authentication.getName());
+//		return new ResponseEntity<CartPayload>(cart, HttpStatus.OK);
+//	}
 }

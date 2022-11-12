@@ -76,7 +76,7 @@ public class Post {
 	private User user;
 	
 	@OneToMany(mappedBy = "post",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	List<PaymentDetail> paymentDetails = new ArrayList<>();
+	List<CartDetail> cartDetails = new ArrayList<>();
 
 	public String getReason() {
 		return reason;
@@ -219,14 +219,6 @@ public class Post {
 
 	public void setUser(User user) {
 		this.user = user;
-	}
-
-	public List<PaymentDetail> getPaymentDetails() {
-		return paymentDetails;
-	}
-
-	public void setPaymentDetails(List<PaymentDetail> paymentDetails) {
-		this.paymentDetails = paymentDetails;
 	}
 
 	public Discount getDiscount() {

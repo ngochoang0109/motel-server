@@ -25,9 +25,14 @@ public class Image {
 		this.source = source;
 		this.type = type;
 	}
+	
 	@ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="post_id")
 	private Post post;
+
+	@OneToOne(mappedBy = "avatar")
+	private User user;
+	
 	public Post getPost() {
 		return post;
 	}
@@ -35,8 +40,6 @@ public class Image {
 	public void setPost(Post post) {
 		this.post = post;
 	}
-	@OneToOne(mappedBy = "avatar")
-	private User user;
 	
 	public User getUser() {
 		return user;

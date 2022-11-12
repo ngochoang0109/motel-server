@@ -11,13 +11,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "payment")
-public class Payment {
+@Table(name = "cart")
+public class Cart {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,12 +26,12 @@ public class Payment {
 	private boolean delFlag;
 	private LocalDateTime payDate;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "user_id")
+	@OneToOne
+	@JoinColumn(name = "user_id", referencedColumnName = "id")
 	private User user;
 	
-	@OneToMany(mappedBy = "payment",cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	List<PaymentDetail> paymentDetails = new ArrayList<>();
+	@OneToMany(mappedBy = "cart",cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	List<CartDetail> cartDetails = new ArrayList<>();
 	
 	public long getId() {
 		return id;
@@ -55,14 +55,6 @@ public class Payment {
 
 	public void setDelFlag(boolean delFlag) {
 		this.delFlag = delFlag;
-	}
-
-	public List<PaymentDetail> getPaymentDetails() {
-		return paymentDetails;
-	}
-
-	public void setPaymentDetails(List<PaymentDetail> paymentDetails) {
-		this.paymentDetails = paymentDetails;
 	}
 
 	public User getUser() {

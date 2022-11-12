@@ -13,15 +13,15 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.server.kltn.motel.api.admin.payload.RejectDatasource;
-import com.server.kltn.motel.api.user.payload.Cart;
+import com.server.kltn.motel.api.user.payload.CartPayload;
 import com.server.kltn.motel.api.user.payload.FilterParam;
 import com.server.kltn.motel.api.user.payload.NewsCard;
 import com.server.kltn.motel.api.user.payload.NewsCart;
 import com.server.kltn.motel.common.HandleDateCommon;
 import com.server.kltn.motel.common.PageAndSortCommon;
 import com.server.kltn.motel.constant.NewsModeConstant;
-import com.server.kltn.motel.entity.Payment;
-import com.server.kltn.motel.entity.PaymentDetail;
+import com.server.kltn.motel.entity.Cart;
+import com.server.kltn.motel.entity.CartDetail;
 import com.server.kltn.motel.entity.Post;
 import com.server.kltn.motel.entity.User;
 import com.server.kltn.motel.exception.ServerException;
@@ -29,7 +29,7 @@ import com.server.kltn.motel.mapper.DiscountMapper;
 import com.server.kltn.motel.mapper.ExpenseMapper;
 import com.server.kltn.motel.mapper.PostMapper;
 import com.server.kltn.motel.page.Page;
-import com.server.kltn.motel.repository.PaymentRepo;
+//import com.server.kltn.motel.repository.PaymentRepo;
 import com.server.kltn.motel.repository.PostRepository;
 import com.server.kltn.motel.repository.TypeOfAccRepository;
 import com.server.kltn.motel.repository.UserRepository;
@@ -53,8 +53,8 @@ public class NewsManagementImpl implements NewsManagementService {
 	@Autowired
 	private UserRepository userRepository;
 
-	@Autowired
-	private PaymentRepo paymentRepo;
+//	@Autowired
+//	private PaymentRepo paymentRepo;
 
 	@Autowired
 	private ExpenseMapper expenseMapper;
@@ -400,71 +400,71 @@ public class NewsManagementImpl implements NewsManagementService {
 	 * of cart is not exist => add item of cart else => throw message
 	 * "Item is exist" is not => create cart, add item to cart
 	 */
-	@Override
-	@Transactional
-	public Cart addNewsToCart(long idNews, String username) {
-		Optional<User> user = userRepository.findByUsernameOrEmail(username, username);
-		Optional<Post> postOptional = postRepository.findById(idNews);
-		Post post = postOptional.get();
-		Optional<Payment> paymentOptional = paymentRepo.getCartIsPayingByUser(username);
+//	@Override
+//	@Transactional
+//	public CartPayload addNewsToCart(long idNews, String username) {
+//		Optional<User> user = userRepository.findByUsernameOrEmail(username, username);
+//		Optional<Post> postOptional = postRepository.findById(idNews);
+//		Post post = postOptional.get();
+//		Optional<Cart> paymentOptional = paymentRepo.getCartIsPayingByUser(username);
+//
+//		// create temp cart
+//		// List<Payment> cart= new ArrayList<>();
+//
+//		// add post to order detail
+//		List<DetailCart> paymentDetails = new ArrayList<>();
+//		DetailCart paymentDetail = new DetailCart();
+//		paymentDetail.setPost(post);
+//		paymentDetails.add(paymentDetail);
+//
+//		if (!paymentOptional.isPresent()) {
+//			Cart cart = new Cart();
+//			cart.setUser(user.get());
+//			cart.setDelFlag(false);
+//			cart.setPaymentDetails(paymentDetails);
+//			paymentDetail.setPayment(cart);
+//			paymentRepo.save(cart);
+//		} else {
+//			if (paymentOptional.get().getPaymentDetails().stream()
+//					.filter(pd -> pd.getPost().equals(post)).findFirst()
+//					.isPresent()) {
+//				throw new ServerException("Bài viết đã có trong giỏ tin");
+//			}
+//			paymentDetail.setPayment(paymentOptional.get());
+//			paymentOptional.get().getPaymentDetails().add(paymentDetail);
+//			paymentRepo.save(paymentOptional.get());
+//		}
+//		return getCart(username);
+//	}
 
-		// create temp cart
-		// List<Payment> cart= new ArrayList<>();
-
-		// add post to order detail
-		List<PaymentDetail> paymentDetails = new ArrayList<>();
-		PaymentDetail paymentDetail = new PaymentDetail();
-		paymentDetail.setPost(post);
-		paymentDetails.add(paymentDetail);
-
-		if (!paymentOptional.isPresent()) {
-			Payment cart = new Payment();
-			cart.setUser(user.get());
-			cart.setDelFlag(false);
-			cart.setPaymentDetails(paymentDetails);
-			paymentDetail.setPayment(cart);
-			paymentRepo.save(cart);
-		} else {
-			if (paymentOptional.get().getPaymentDetails().stream()
-					.filter(pd -> pd.getPost().equals(post)).findFirst()
-					.isPresent()) {
-				throw new ServerException("Bài viết đã có trong giỏ tin");
-			}
-			paymentDetail.setPayment(paymentOptional.get());
-			paymentOptional.get().getPaymentDetails().add(paymentDetail);
-			paymentRepo.save(paymentOptional.get());
-		}
-		return getCart(username);
-	}
-
-	@Override
-	public Cart getCart(String username) {
-		Optional<Payment> paymentOptional = paymentRepo.getCartIsPayingByUser(username);
-		if (paymentOptional.isPresent()) {
-			long totalPriceOfCart = 0;
-			Payment payment = paymentOptional.get();
-			Cart cart = new Cart();
-			cart.setIdCart(payment.getId());
-
-			List<NewsCart> newsCarts = new ArrayList<>();
-
-			for (PaymentDetail paymentDetail : payment.getPaymentDetails()) {
-				NewsCard newsCard= postMapper.mapPostToNewsCard(paymentDetail.getPost());
-				NewsCart newsCart = new NewsCart(newsCard);
-				totalPriceOfCart = totalPriceOfCart + paymentDetail.getPost().getTotalAmount();
-				newsCart.setExpenseDatasource(
-						expenseMapper.convertExpenseToExpenseDatasource(paymentDetail.getPost().getExpense()));
-				newsCart.setDiscountDatasource(
-						discountMapper.mapDiscountToDiscountDatasource(paymentDetail.getPost().getDiscount()));
-				newsCart.setTypeOfAcc(paymentDetail.getPost().getAccomodation().getTypeOfAcc());
-				newsCart.setNumDate(
-					(int)ChronoUnit.DAYS.between( paymentDetail.getPost().getStartedDate(),paymentDetail.getPost().getClosedDate() ));
-				newsCarts.add(newsCart);
-			}
-			cart.setTotalPriceOfCart(totalPriceOfCart);
-			cart.setNewsCarts(newsCarts);
-			return cart;
-		}
-		throw new ServerException("Chưa có giỏ hàng");
-	}
+//	@Override
+//	public CartPayload getCart(String username) {
+//		Optional<Cart> paymentOptional = paymentRepo.getCartIsPayingByUser(username);
+//		if (paymentOptional.isPresent()) {
+//			long totalPriceOfCart = 0;
+//			Cart payment = paymentOptional.get();
+//			CartPayload cart = new CartPayload();
+//			cart.setIdCart(payment.getId());
+//
+//			List<NewsCart> newsCarts = new ArrayList<>();
+//
+//			for (DetailCart paymentDetail : payment.getPaymentDetails()) {
+//				NewsCard newsCard= postMapper.mapPostToNewsCard(paymentDetail.getPost());
+//				NewsCart newsCart = new NewsCart(newsCard);
+//				totalPriceOfCart = totalPriceOfCart + paymentDetail.getPost().getTotalAmount();
+//				newsCart.setExpenseDatasource(
+//						expenseMapper.convertExpenseToExpenseDatasource(paymentDetail.getPost().getExpense()));
+//				newsCart.setDiscountDatasource(
+//						discountMapper.mapDiscountToDiscountDatasource(paymentDetail.getPost().getDiscount()));
+//				newsCart.setTypeOfAcc(paymentDetail.getPost().getAccomodation().getTypeOfAcc());
+//				newsCart.setNumDate(
+//					(int)ChronoUnit.DAYS.between( paymentDetail.getPost().getStartedDate(),paymentDetail.getPost().getClosedDate() ));
+//				newsCarts.add(newsCart);
+//			}
+//			cart.setTotalPriceOfCart(totalPriceOfCart);
+//			cart.setNewsCarts(newsCarts);
+//			return cart;
+//		}
+//		throw new ServerException("Chưa có giỏ hàng");
+//	}
 }

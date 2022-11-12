@@ -15,8 +15,8 @@ public interface UserRepository extends JpaRepository<User, Long>{
 	Boolean existsByUsername(String email);
     Boolean existsByEmail(String email);
     
-    @Query("SELECT u"
-    		+ " FROM User u INNER JOIN u.payments p"
-    		+ " Where p.delFlag=false and u.username=:username")
-    Optional<User> getCartIsPayingByUser(@Param("username") String username);
+//    @Query("SELECT u"
+//    		+ " FROM User u INNER JOIN u.payments p"
+//    		+ " Where p.delFlag=false and u.username=:username")
+//    Optional<User> getCartIsPayingByUser(@Param("username") String username);
 }

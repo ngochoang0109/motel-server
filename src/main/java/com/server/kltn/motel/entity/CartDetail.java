@@ -10,16 +10,16 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "payment_detail")
-public class PaymentDetail {
+@Table(name = "cart_detail")
+public class CartDetail {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "payment_id")
-	private Payment payment;
+	@JoinColumn(name = "cart_id")
+	private Cart cart;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "post_id")
@@ -31,14 +31,6 @@ public class PaymentDetail {
 
 	public void setId(long id) {
 		this.id = id;
-	}
-
-	public Payment getPayment() {
-		return payment;
-	}
-
-	public void setPayment(Payment payment) {
-		this.payment = payment;
 	}
 
 	public Post getPost() {

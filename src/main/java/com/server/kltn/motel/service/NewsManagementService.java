@@ -3,7 +3,7 @@ package com.server.kltn.motel.service;
 import java.util.List;
 
 import com.server.kltn.motel.api.admin.payload.RejectDatasource;
-import com.server.kltn.motel.api.user.payload.Cart;
+import com.server.kltn.motel.api.user.payload.CartPayload;
 import com.server.kltn.motel.api.user.payload.FilterParam;
 import com.server.kltn.motel.api.user.payload.NewsCard;
 import com.server.kltn.motel.page.Page;
@@ -24,6 +24,6 @@ public interface NewsManagementService {
 	Boolean rejectedNews(long id);
 	Boolean insertReason(RejectDatasource rejectDatasource);
 	String selReason(long id);
-	Cart addNewsToCart(long idNews, String username);
-	Cart getCart(String username);
+//	CartPayload addNewsToCart(long idNews, String username);
+//	CartPayload getCart(String username);
 }
