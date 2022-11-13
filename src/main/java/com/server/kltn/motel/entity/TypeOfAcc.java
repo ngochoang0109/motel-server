@@ -17,8 +17,10 @@ public class TypeOfAcc {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	private String name;
+	
 	@OneToMany
 	private List<Accomodation> accomodations= new ArrayList<>();
+	
 	public long getId() {
 		return id;
 	}

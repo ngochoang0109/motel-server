@@ -10,7 +10,16 @@ public class NewsCart extends NewsCard{
 	private DiscountDatasource discountDatasource;
 	private TypeOfAcc typeOfAcc;
 	private int numDate;
+	private boolean checked;
 	
+	public boolean isChecked() {
+		return checked;
+	}
+
+	public void setChecked(boolean checked) {
+		this.checked = checked;
+	}
+
 	public int getNumDate() {
 		return this.numDate;
 	}

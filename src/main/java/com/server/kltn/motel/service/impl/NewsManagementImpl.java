@@ -1,38 +1,23 @@
 package com.server.kltn.motel.service.impl;
 
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
-
-import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.server.kltn.motel.api.admin.payload.RejectDatasource;
-import com.server.kltn.motel.api.user.payload.CartPayload;
 import com.server.kltn.motel.api.user.payload.FilterParam;
 import com.server.kltn.motel.api.user.payload.NewsCard;
-import com.server.kltn.motel.api.user.payload.NewsCart;
 import com.server.kltn.motel.common.HandleDateCommon;
 import com.server.kltn.motel.common.PageAndSortCommon;
 import com.server.kltn.motel.constant.NewsModeConstant;
-import com.server.kltn.motel.entity.Cart;
-import com.server.kltn.motel.entity.CartDetail;
 import com.server.kltn.motel.entity.Post;
-import com.server.kltn.motel.entity.User;
-import com.server.kltn.motel.exception.ServerException;
-import com.server.kltn.motel.mapper.DiscountMapper;
-import com.server.kltn.motel.mapper.ExpenseMapper;
 import com.server.kltn.motel.mapper.PostMapper;
 import com.server.kltn.motel.page.Page;
-//import com.server.kltn.motel.repository.PaymentRepo;
 import com.server.kltn.motel.repository.PostRepository;
-import com.server.kltn.motel.repository.TypeOfAccRepository;
-import com.server.kltn.motel.repository.UserRepository;
 import com.server.kltn.motel.service.NewsManagementService;
 
 @Service
@@ -49,21 +34,6 @@ public class NewsManagementImpl implements NewsManagementService {
 
 	@Autowired
 	private HandleDateCommon handleDateCommon;
-
-	@Autowired
-	private UserRepository userRepository;
-
-//	@Autowired
-//	private PaymentRepo paymentRepo;
-
-	@Autowired
-	private ExpenseMapper expenseMapper;
-
-	@Autowired
-	private DiscountMapper discountMapper;
-	
-	@Autowired
-	private TypeOfAccRepository typeOfAccRepository;
 
 	@Override
 	public Page<NewsCard> getAllNewsOfUser(int pageNo, int pageSize, String field, int mode, String username) {
@@ -394,77 +364,4 @@ public class NewsManagementImpl implements NewsManagementService {
 	public String selReason(long id) {
 		return postRepository.getById(id).getReason();
 	}
-
-	/*
-	 * get cart of user from db with delflag= false check cart is exist check item
-	 * of cart is not exist => add item of cart else => throw message
-	 * "Item is exist" is not => create cart, add item to cart
-	 */
-//	@Override
-//	@Transactional
-//	public CartPayload addNewsToCart(long idNews, String username) {
-//		Optional<User> user = userRepository.findByUsernameOrEmail(username, username);
-//		Optional<Post> postOptional = postRepository.findById(idNews);
-//		Post post = postOptional.get();
-//		Optional<Cart> paymentOptional = paymentRepo.getCartIsPayingByUser(username);
-//
-//		// create temp cart
-//		// List<Payment> cart= new ArrayList<>();
-//
-//		// add post to order detail
-//		List<DetailCart> paymentDetails = new ArrayList<>();
-//		DetailCart paymentDetail = new DetailCart();
-//		paymentDetail.setPost(post);
-//		paymentDetails.add(paymentDetail);
-//
-//		if (!paymentOptional.isPresent()) {
-//			Cart cart = new Cart();
-//			cart.setUser(user.get());
-//			cart.setDelFlag(false);
-//			cart.setPaymentDetails(paymentDetails);
-//			paymentDetail.setPayment(cart);
-//			paymentRepo.save(cart);
-//		} else {
-//			if (paymentOptional.get().getPaymentDetails().stream()
-//					.filter(pd -> pd.getPost().equals(post)).findFirst()
-//					.isPresent()) {
-//				throw new ServerException("Bài viết đã có trong giỏ tin");
-//			}
-//			paymentDetail.setPayment(paymentOptional.get());
-//			paymentOptional.get().getPaymentDetails().add(paymentDetail);
-//			paymentRepo.save(paymentOptional.get());
-//		}
-//		return getCart(username);
-//	}
-
-//	@Override
-//	public CartPayload getCart(String username) {
-//		Optional<Cart> paymentOptional = paymentRepo.getCartIsPayingByUser(username);
-//		if (paymentOptional.isPresent()) {
-//			long totalPriceOfCart = 0;
-//			Cart payment = paymentOptional.get();
-//			CartPayload cart = new CartPayload();
-//			cart.setIdCart(payment.getId());
-//
-//			List<NewsCart> newsCarts = new ArrayList<>();
-//
-//			for (DetailCart paymentDetail : payment.getPaymentDetails()) {
-//				NewsCard newsCard= postMapper.mapPostToNewsCard(paymentDetail.getPost());
-//				NewsCart newsCart = new NewsCart(newsCard);
-//				totalPriceOfCart = totalPriceOfCart + paymentDetail.getPost().getTotalAmount();
-//				newsCart.setExpenseDatasource(
-//						expenseMapper.convertExpenseToExpenseDatasource(paymentDetail.getPost().getExpense()));
-//				newsCart.setDiscountDatasource(
-//						discountMapper.mapDiscountToDiscountDatasource(paymentDetail.getPost().getDiscount()));
-//				newsCart.setTypeOfAcc(paymentDetail.getPost().getAccomodation().getTypeOfAcc());
-//				newsCart.setNumDate(
-//					(int)ChronoUnit.DAYS.between( paymentDetail.getPost().getStartedDate(),paymentDetail.getPost().getClosedDate() ));
-//				newsCarts.add(newsCart);
-//			}
-//			cart.setTotalPriceOfCart(totalPriceOfCart);
-//			cart.setNewsCarts(newsCarts);
-//			return cart;
-//		}
-//		throw new ServerException("Chưa có giỏ hàng");
-//	}
 }

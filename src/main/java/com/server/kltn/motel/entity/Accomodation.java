@@ -13,6 +13,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "accomodation")
 public class Accomodation {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
@@ -32,6 +33,15 @@ public class Accomodation {
 	private boolean balcony;
 	private boolean airConditioner;
 	private boolean heater;
+	private String tower;
+	
+	@OneToOne(mappedBy = "accomodation",cascade = CascadeType.ALL)
+    private Post post;
+	
+	@ManyToOne
+    @JoinColumn(name="type")
+    private TypeOfAcc typeOfAcc;
+	
 	public boolean isBalcony() {
 		return balcony;
 	}
@@ -50,12 +60,7 @@ public class Accomodation {
 	public void setHeater(boolean heater) {
 		this.heater = heater;
 	}
-	private String tower;
-	@OneToOne(mappedBy = "accomodation",cascade = CascadeType.ALL)
-    private Post post;
-	@ManyToOne
-    @JoinColumn(name="type")
-    private TypeOfAcc typeOfAcc;
+	
 	public long getId() {
 		return id;
 	}

@@ -122,6 +122,7 @@ public class PostNewsImpl implements PostNewsService {
 			}
 		}
 		catch (Exception e) {
+			System.out.print(e.getMessage());
 			throw new ServerException("Lỗi tạo tin, vui lòng điền đầy đủ thông tin");
 		}
 	}
