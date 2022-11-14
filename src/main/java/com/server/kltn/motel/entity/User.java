@@ -3,7 +3,6 @@ package com.server.kltn.motel.entity;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -49,6 +48,9 @@ public class User {
 	
 	@OneToOne(mappedBy = "user")
 	private Cart cart;
+	
+	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+	List<Payment> payments= new ArrayList<>();
 	
 	public Cart getCart() {
 		return cart;

@@ -1,6 +1,5 @@
 package com.server.kltn.motel.service.impl;
 
-import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;

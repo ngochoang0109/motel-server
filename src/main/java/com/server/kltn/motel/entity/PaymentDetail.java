@@ -10,37 +10,38 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "cart_detail")
-public class CartDetail {
-	
+@Table(name = "payment_detail")
+public class PaymentDetail {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "cart_id")
-	private Cart cart;
+	@JoinColumn(name = "pay_id")
+	private Payment payment;
 	
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "post_id")
 	private Post post;
 	
-	private boolean checked;
+	private long amount;
+	
+	private long discount;
 
-	public boolean isChecked() {
-		return checked;
+	public long getDiscount() {
+		return discount;
 	}
 
-	public void setChecked(boolean checked) {
-		this.checked = checked;
+	public void setDiscount(long discount) {
+		this.discount = discount;
 	}
 
-	public Cart getCart() {
-		return cart;
+	public long getAmount() {
+		return amount;
 	}
 
-	public void setCart(Cart cart) {
-		this.cart = cart;
+	public void setAmount(long amount) {
+		this.amount = amount;
 	}
 
 	public long getId() {
@@ -49,6 +50,14 @@ public class CartDetail {
 
 	public void setId(long id) {
 		this.id = id;
+	}
+
+	public Payment getPayment() {
+		return payment;
+	}
+
+	public void setPayment(Payment payment) {
+		this.payment = payment;
 	}
 
 	public Post getPost() {

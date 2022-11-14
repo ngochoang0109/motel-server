@@ -78,6 +78,9 @@ public class Post {
 	@OneToMany(mappedBy = "post",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	List<CartDetail> cartDetails = new ArrayList<>();
 
+	@OneToMany(mappedBy = "post",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	List<PaymentDetail> paymentDetails = new ArrayList<>();
+	
 	public String getReason() {
 		return reason;
 	}
