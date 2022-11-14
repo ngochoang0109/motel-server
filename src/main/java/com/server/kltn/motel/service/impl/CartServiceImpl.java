@@ -1,5 +1,6 @@
 package com.server.kltn.motel.service.impl;
 
+import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +14,8 @@ import org.springframework.stereotype.Service;
 import com.server.kltn.motel.api.user.payload.CartPayload;
 import com.server.kltn.motel.api.user.payload.NewsCard;
 import com.server.kltn.motel.api.user.payload.NewsCart;
+import com.server.kltn.motel.api.user.payload.UpdateItemCart;
+import com.server.kltn.motel.common.HandleDateCommon;
 import com.server.kltn.motel.entity.Cart;
 import com.server.kltn.motel.entity.CartDetail;
 import com.server.kltn.motel.entity.Post;
@@ -46,6 +49,9 @@ public class CartServiceImpl implements CartService {
 	
 	@Autowired
 	private CartDetailRepository cartDetailRepository;
+	
+	@Autowired
+	private HandleDateCommon handleDateCommon;
 	
 	@Override
 	@Transactional
@@ -110,5 +116,40 @@ public class CartServiceImpl implements CartService {
 		cartOptional.get().getCartDetails().add(cartDetail);
 		cartRepository.save(cartOptional.get());
 		return getCart(username);
+	}
+	
+	@Override
+	@Transactional
+	public CartPayload updateItem(String username,UpdateItemCart updateItemCart, long cartId, long newsId) {
+		CartDetail cartDetail= cartDetailRepository.getPostOfCart(cartId, newsId);
+		Post post= cartDetail.getPost();
+	
+		post.setStartedDate(handleDateCommon.convertStringDateToLocalDateTime(updateItemCart.getStartedDate())); 
+		post.setClosedDate(handleDateCommon.convertStringDateToLocalDateTime(updateItemCart.getStartedDate())
+				.plusDays(updateItemCart.getNumDate()));
+		long amountPost=post.getExpense().getCost()* updateItemCart.getNumDate();
+		if (post.getDiscount()!=null) {
+			long amountDiscounted= (amountPost* post.getDiscount().getPercent())/100;
+			if (amountDiscounted> post.getDiscount().getPrice()) {
+				amountPost= amountPost-post.getDiscount().getPrice();
+			}else {
+				amountPost= amountPost- amountDiscounted;
+			}
+		}
+		post.setTotalAmount(amountPost);
+		cartDetail.setChecked(updateItemCart.isChecked());
+		cartDetail.setChecked(updateItemCart.isChecked());
+		cartDetail.setPost(post);
+		cartDetailRepository.save(cartDetail);
+		return this.getCart(username);
+	}
+	
+	@Override
+	@Transactional
+	public CartPayload updateItem(String username, List<UpdateItemCart> updateItemCart, long cartId) {
+		for (UpdateItemCart updateItem : updateItemCart) {
+			this.updateItem(username, updateItem, cartId, updateItem.getId());
+		}
+		return this.getCart(username);
 	}
 }

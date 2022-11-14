@@ -6,7 +6,7 @@ public class AccomodationInfor {
 	private boolean parking;
 	private boolean internet;
 	private boolean heater;
-	private boolean	balcony;
+	private boolean balcony;
 	private String province;
 	private String	district;
 	private String ward;
