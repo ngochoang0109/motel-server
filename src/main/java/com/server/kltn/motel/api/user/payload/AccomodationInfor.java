@@ -18,8 +18,8 @@ public class AccomodationInfor {
 	private int numOfFloor;
 	private int numOfToilet;
 	private String	furniture;
-	private String	directionBalcony;
-	private String	directionHouse;
+	private String directionBalcony;
+	private String directionHouse;
 	private long price;
 	public long getTypesOfAcc() {
 		return typesOfAcc;

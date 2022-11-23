@@ -32,7 +32,23 @@ public class Payment {
 	
 	private long totalAmount;
 	private LocalDateTime createdDate;
+	private boolean isPayment;
 	
+	// 0: none, 1: success, 2: fail
+	private int status;
+	
+	public int getStatus() {
+		return status;
+	}
+	public void setStatus(int status) {
+		this.status = status;
+	}
+	public boolean isPayment() {
+		return isPayment;
+	}
+	public void setPayment(boolean isPayment) {
+		this.isPayment = isPayment;
+	}
 	public long getId() {
 		return id;
 	}

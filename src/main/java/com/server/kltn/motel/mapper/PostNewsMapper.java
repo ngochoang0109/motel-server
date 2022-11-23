@@ -27,7 +27,7 @@ public class PostNewsMapper {
 				accomodationInfor.getPrice(), accomodationInfor.getNumOfBed(), accomodationInfor.getNumOfToilet(),
 				accomodationInfor.getNumOfFloor(), accomodationInfor.getFloorNumber(), accomodationInfor.getFurniture(),
 				accomodationInfor.isInternet(), accomodationInfor.isParking(), accomodationInfor.isBalcony(),
-				accomodationInfor.isAirConditioner(), accomodationInfor.isHeater(), accomodationInfor.getTower());
+				accomodationInfor.isAirConditioner(), accomodationInfor.isHeater(), accomodationInfor.getTower(), accomodationInfor.getDirectionBalcony(), accomodationInfor.getDirectionHouse());
 		return accomodation;
 	}
 	

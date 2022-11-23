@@ -34,6 +34,8 @@ public class Accomodation {
 	private boolean airConditioner;
 	private boolean heater;
 	private String tower;
+	private String directionBalcony;
+	private String directionHouse;
 	
 	@OneToOne(mappedBy = "accomodation",cascade = CascadeType.ALL)
     private Post post;
@@ -61,6 +63,18 @@ public class Accomodation {
 		this.heater = heater;
 	}
 	
+	public String getDirectionBalcony() {
+		return directionBalcony;
+	}
+	public void setDirectionBalcony(String directionBalcony) {
+		this.directionBalcony = directionBalcony;
+	}
+	public String getDirectionHouse() {
+		return directionHouse;
+	}
+	public void setDirectionHouse(String directionHouse) {
+		this.directionHouse = directionHouse;
+	}
 	public long getId() {
 		return id;
 	}
@@ -94,7 +108,7 @@ public class Accomodation {
 	}
 	public Accomodation(String province, String dicstrict, String ward, String street, int area, long price,
 			int numOfBed, int numOfToilet, int numOfFloor, int floorNumber, String furniture, boolean internet,
-			boolean parking, boolean balcony, boolean airConditioner, boolean heater, String tower) {
+			boolean parking, boolean balcony, boolean airConditioner, boolean heater, String tower, String directionBalcony, String directionHouse) {
 		super();
 		this.province = province;
 		this.dicstrict = dicstrict;
@@ -113,6 +127,8 @@ public class Accomodation {
 		this.airConditioner = airConditioner;
 		this.heater = heater;
 		this.tower = tower;
+		this.directionBalcony = directionBalcony;
+		this.directionHouse = directionHouse;
 	}
 	
 	public int getArea() {
