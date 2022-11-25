@@ -3,6 +3,8 @@ package com.server.kltn.motel.api.user.payload;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.server.kltn.motel.api.user.payload.paymentDetail.OrderDetailPayload;
+
 public class PaymentPayload {
 	private long id;
 	List<OrderDetailPayload> orderDetailPayloads= new LinkedList<>();

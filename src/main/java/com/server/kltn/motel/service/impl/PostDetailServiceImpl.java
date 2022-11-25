@@ -1,5 +1,7 @@
 package com.server.kltn.motel.service.impl;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -7,9 +9,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.server.kltn.motel.api.user.payload.PostDetailPayload;
+import com.server.kltn.motel.api.user.payload.paymentDetail.CountRelatedNews;
+import com.server.kltn.motel.api.user.payload.paymentDetail.HightExpenseRelated;
+import com.server.kltn.motel.api.user.payload.paymentDetail.RelatedNews;
+import com.server.kltn.motel.common.HandleDateCommon;
+import com.server.kltn.motel.entity.Accomodation;
 import com.server.kltn.motel.entity.Image;
 import com.server.kltn.motel.entity.Post;
 import com.server.kltn.motel.entity.Video;
+import com.server.kltn.motel.repository.AccomodationRepo;
 import com.server.kltn.motel.repository.PostRepository;
 import com.server.kltn.motel.service.PostDetailService;
 
@@ -18,6 +26,12 @@ public class PostDetailServiceImpl implements PostDetailService{
 	
 	@Autowired
 	private PostRepository postRepository;
+	
+	@Autowired
+	private AccomodationRepo accomodationRepo;
+	
+	@Autowired
+	private HandleDateCommon handleDateCommon;
 	
 	@Override
 	public PostDetailPayload getPostDetail(long postId) {
@@ -68,5 +82,38 @@ public class PostDetailServiceImpl implements PostDetailService{
 		postDetailPayload.setAvatar(post.getUser().getAvatar() != null ? post.getUser().getAvatar().getSource() : "");
 		
 		return postDetailPayload;
+	}
+	
+	@Override
+	public List<CountRelatedNews> getRelatedNEws(String type, String district) {
+		List<CountRelatedNews> accomodations = 
+				accomodationRepo.getReleatedNewsOfTypeAndDistrict(type, district, handleDateCommon.getCurrentDateTime());
+		return accomodations;
+	}
+	
+	@Override
+	public List<HightExpenseRelated> getHightExpenseRelateds() {
+		 List<HightExpenseRelated> hightExpenseRelateds = 
+				accomodationRepo.getPostHighExpense(handleDateCommon.getCurrentDateTime(), Arrays.asList((long)5,(long)4, (long)3));
+		return hightExpenseRelateds;
+	}
+	
+	@Override
+	public List<RelatedNews> getRelatedNews(String province, String district) {
+		List<Accomodation> accomodations = 
+				accomodationRepo.getRelatedNews(province,district, handleDateCommon.getCurrentDateTime()).stream().limit(6).toList();
+		List<RelatedNews> relatedNews = new LinkedList<RelatedNews>();
+		for (Accomodation acc : accomodations) {
+			RelatedNews r = new RelatedNews();
+			r.setArea(acc.getArea());
+			r.setDistrict(acc.getDicstrict());
+			r.setPrice(acc.getPrice());
+			r.setProvince(acc.getProvince());
+			r.setTitle(acc.getPost().getTitle());
+			r.setStartedDate(acc.getPost().getStartedDate().toString());
+			r.setImage(acc.getPost().getImages().get(0).getSource());
+			relatedNews.add(r);
+		}
+		return relatedNews;
 	}
 }

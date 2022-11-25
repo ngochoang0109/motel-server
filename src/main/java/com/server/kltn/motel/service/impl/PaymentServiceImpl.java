@@ -19,12 +19,10 @@ import java.util.TimeZone;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.amazonaws.services.connectparticipant.model.Item;
 import com.server.kltn.motel.api.user.payload.HistoryPayload;
-import com.server.kltn.motel.api.user.payload.OrderDetailPayload;
 import com.server.kltn.motel.api.user.payload.PayOrder;
 import com.server.kltn.motel.api.user.payload.PaymentPayload;
+import com.server.kltn.motel.api.user.payload.paymentDetail.OrderDetailPayload;
 import com.server.kltn.motel.common.HandleDateCommon;
 import com.server.kltn.motel.config.VnpayConfig;
 import com.server.kltn.motel.entity.Cart;
