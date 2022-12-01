@@ -94,7 +94,7 @@ public class PostDetailServiceImpl implements PostDetailService{
 	@Override
 	public List<HightExpenseRelated> getHightExpenseRelateds() {
 		 List<HightExpenseRelated> hightExpenseRelateds = 
-				accomodationRepo.getPostHighExpense(handleDateCommon.getCurrentDateTime(), Arrays.asList((long)5,(long)4, (long)3));
+				accomodationRepo.getPostHighExpense(handleDateCommon.getCurrentDateTime(), Arrays.asList((long)5,(long)4)).stream().limit(20).toList();
 		return hightExpenseRelateds;
 	}
 	
@@ -105,6 +105,7 @@ public class PostDetailServiceImpl implements PostDetailService{
 		List<RelatedNews> relatedNews = new LinkedList<RelatedNews>();
 		for (Accomodation acc : accomodations) {
 			RelatedNews r = new RelatedNews();
+			r.setId(acc.getPost().getId());
 			r.setArea(acc.getArea());
 			r.setDistrict(acc.getDicstrict());
 			r.setPrice(acc.getPrice());

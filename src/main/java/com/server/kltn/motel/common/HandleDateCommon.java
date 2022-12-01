@@ -5,12 +5,14 @@ import java.time.format.DateTimeFormatter;
 
 import org.springframework.stereotype.Component;
 
+import com.server.kltn.motel.constant.DateTimeConstant;
+
 @Component
 public class HandleDateCommon {
 	public LocalDateTime getCurrentDateTime() {
 		LocalDateTime currentTime= LocalDateTime.now();
-//		LocalDateTime returnValueDateTime= currentTime.plusHours(DateTimeConstant.UtcTimeZoneVN);
-		return currentTime;
+		LocalDateTime returnValueDateTime= currentTime.plusHours(DateTimeConstant.UtcTimeZoneVN);
+		return returnValueDateTime;
 	}
 	
 	public LocalDateTime convertStringDateToLocalDateTime(String strDate) {

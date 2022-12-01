@@ -7,7 +7,8 @@ import java.util.List;
 import javax.persistence.criteria.Predicate;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
-import com.server.kltn.motel.api.user.payload.SearchParam;
+
+import com.server.kltn.motel.api.user.payload.HomePayload.SearchParam;
 import com.server.kltn.motel.entity.Post;
 
 @Component
@@ -45,7 +46,7 @@ public class SearchSepecification {
 			if (searchParam.getAreaFrom() < searchParam.getAreaTo() || searchParam.getAreaTo() != 0) {
 				predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("accomodation").get("area"),
 						searchParam.getAreaFrom()));
-				if (searchParam.getAreaTo() < 1000) {
+				if (searchParam.getAreaTo() < 150) {
 					predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("accomodation").get("area"),
 							searchParam.getAreaTo()));
 				}

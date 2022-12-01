@@ -15,6 +15,7 @@ import com.server.kltn.motel.api.user.payload.CostCalculate;
 import com.server.kltn.motel.api.user.payload.NewsInfor;
 import com.server.kltn.motel.common.AwsS3Common;
 import com.server.kltn.motel.common.HandleDateCommon;
+import com.server.kltn.motel.constant.DateTimeConstant;
 import com.server.kltn.motel.entity.Accomodation;
 import com.server.kltn.motel.entity.Expense;
 import com.server.kltn.motel.entity.Image;
@@ -75,8 +76,8 @@ public class PostNewsImpl implements PostNewsService {
 			// set Post Object
 			Post post = postNewsMapper.mapNewsInforToPost(newsInfor);
 			post.setCreatedDate(handleDateCommon.getCurrentDateTime());
-			post.setStartedDate(handleDateCommon.convertStringDateToLocalDateTime(costCalculate.getStartedDate()));
-			LocalDateTime closedDate = handleDateCommon.convertStringDateToLocalDateTime(costCalculate.getStartedDate())
+			post.setStartedDate(handleDateCommon.convertStringDateToLocalDateTime(costCalculate.getStartedDate()).plusHours(DateTimeConstant.UtcTimeZoneVN));
+			LocalDateTime closedDate = handleDateCommon.convertStringDateToLocalDateTime(costCalculate.getStartedDate()).plusHours(DateTimeConstant.UtcTimeZoneVN)
 					.plusDays(costCalculate.getNumDatePost());
 			post.setClosedDate(closedDate);
 			

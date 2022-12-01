@@ -1,4 +1,4 @@
-package com.server.kltn.motel.api.user.payload;
+package com.server.kltn.motel.api.user.payload.HomePayload;
 
 public class CountNews {
 	private String province;

@@ -1,6 +1,7 @@
 package com.server.kltn.motel.api.user.payload.paymentDetail;
 
 public class RelatedNews {
+	private long id;
 	private String title;
 	private long price;
 	private long area;
@@ -9,6 +10,12 @@ public class RelatedNews {
 	private String startedDate;
 	private String image;
 	
+	public long getId() {
+		return id;
+	}
+	public void setId(long id) {
+		this.id = id;
+	}
 	public String getImage() {
 		return image;
 	}
