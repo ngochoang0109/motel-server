@@ -1,5 +1,8 @@
 package com.server.kltn.motel.service.impl;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,5 +36,24 @@ public class UserServiceImpl implements UserService{
 		userInfor.setUsername(user.getUsername());
 		userInfor.setEmail(user.getEmail()==null?"Chưa cập nhật địa chỉ":user.getEmail());
 		return userInfor;
+	}
+	
+	@Override
+	public List<UserInfor> getAllUser() {
+		List<UserInfor> userInfors = new LinkedList<>();
+		List<User> users = userRepository.findAll();
+		for (User user : users) {
+			UserInfor userInfor= new UserInfor();
+			userInfor.setId(user.getId());
+			userInfor.setFullname(user.getFullname());
+			userInfor.setAddress(user.getAddress()==null?"Chưa cập nhật địa chỉ":user.getAddress());
+			userInfor.setAvartar(user.getAvatar()==null?"":user.getAvatar().getSource());
+			userInfor.setPhone(user.getPhone());
+			userInfor.setUsername(user.getUsername());
+			userInfor.setEmail(user.getEmail()==null?"Chưa cập nhật địa chỉ":user.getEmail());
+			userInfor.setRole(user.getRoles().get(0).getName());
+			userInfors.add(userInfor);
+		}
+		return userInfors;
 	}
 }
