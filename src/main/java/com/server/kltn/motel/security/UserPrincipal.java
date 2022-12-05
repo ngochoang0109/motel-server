@@ -14,6 +14,10 @@ import com.server.kltn.motel.entity.User;
 
 public class UserPrincipal implements UserDetails{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private long id;
 	@JsonIgnore
 	private String password;

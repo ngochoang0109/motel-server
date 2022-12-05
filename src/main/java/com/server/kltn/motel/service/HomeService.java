@@ -5,7 +5,6 @@ import java.util.List;
 import com.server.kltn.motel.api.user.payload.NewsCard;
 import com.server.kltn.motel.api.user.payload.HomePayload.CountNews;
 import com.server.kltn.motel.api.user.payload.HomePayload.SearchParam;
-import com.server.kltn.motel.entity.Post;
 import com.server.kltn.motel.page.Page;
 
 public interface HomeService {

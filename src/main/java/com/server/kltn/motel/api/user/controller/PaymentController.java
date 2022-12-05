@@ -1,9 +1,5 @@
 package com.server.kltn.motel.api.user.controller;
-
 import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,9 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.server.kltn.motel.api.user.payload.HistoryPayload;
 import com.server.kltn.motel.api.user.payload.PayOrder;
 import com.server.kltn.motel.api.user.payload.PaymentPayload;
