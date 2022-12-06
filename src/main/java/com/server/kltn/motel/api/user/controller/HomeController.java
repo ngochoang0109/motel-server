@@ -1,7 +1,5 @@
 package com.server.kltn.motel.api.user.controller;
-
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,7 +7,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.server.kltn.motel.api.user.payload.NewsCard;
 import com.server.kltn.motel.api.user.payload.HomePayload.CountNews;
 import com.server.kltn.motel.api.user.payload.HomePayload.SearchParam;
@@ -28,6 +25,7 @@ public class HomeController {
 			@RequestParam(value = "pageNo", defaultValue = PageAndSortConstant.PAGE_NO, required = false) int pageNo,
 			@RequestParam(value = "pageSize", defaultValue = PageAndSortConstant.PAGE_SIZE, required = false) int pageSize,
 			@RequestParam(value = "sort", defaultValue = PageAndSortConstant.SORT, required = false) String field,
+			@RequestParam(value = "textSearch", defaultValue = "", required = false) String textSearch,
 			@RequestParam(value = "mode", defaultValue = PageAndSortConstant.MODE, required = false) int mode,
 			@RequestParam(value = "type", defaultValue = "0", required = false) long type,
 			@RequestParam(value = "province", defaultValue = "", required = false) String province,
@@ -36,8 +34,12 @@ public class HomeController {
 			@RequestParam(value = "priceFrom", defaultValue = "0", required = false) long priceFrom,
 			@RequestParam(value = "priceTo", defaultValue = "0", required = false) long priceTo,
 			@RequestParam(value = "areaFrom", defaultValue = "0", required = false) int areaFrom,
-			@RequestParam(value = "areaTo", defaultValue = "0", required = false) int areaTo) {
+			@RequestParam(value = "areaTo", defaultValue = "0", required = false) int areaTo,
+			@RequestParam(value = "numBeds", defaultValue = "", required = false) List<Integer> numBeds,
+			@RequestParam(value = "directionHouse", defaultValue = "", required = false) List<String> directionHouse,
+			@RequestParam(value = "media", defaultValue = "", required = false) List<Integer> media) {
 		SearchParam searchParam = new SearchParam();
+		searchParam.setTextSearch(textSearch);
 		searchParam.setType(type);
 		searchParam.setProvince(province);
 		searchParam.setDistrict(district);
@@ -46,6 +48,9 @@ public class HomeController {
 		searchParam.setPriceTo(priceTo);
 		searchParam.setAreaFrom(areaFrom);
 		searchParam.setAreaTo(areaTo);
+		searchParam.setNumBeds(numBeds);
+		searchParam.setDirectionHouse(directionHouse);
+		searchParam.setMedia(media);
 		Page<NewsCard> posts = homeService.searchPageCard(pageNo, pageSize, field, mode, searchParam);
 		return new ResponseEntity<Page<NewsCard>>(posts, HttpStatus.OK);
 	}

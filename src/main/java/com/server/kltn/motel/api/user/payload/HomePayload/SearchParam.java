@@ -1,6 +1,9 @@
 package com.server.kltn.motel.api.user.payload.HomePayload;
 
+import java.util.List;
+
 public class SearchParam {
+	private String textSearch;
 	private long type;
 	private String province;
 	private String district;
@@ -9,7 +12,35 @@ public class SearchParam {
 	private long priceTo;
 	private int areaFrom;
 	private int areaTo;
-
+	private List<Integer> numBeds;
+	private List<String> directionHouse;
+	/*1: image, 2:video*/
+	private List<Integer> media;
+	
+	public String getTextSearch() {
+		return textSearch;
+	}
+	public void setTextSearch(String textSearch) {
+		this.textSearch = textSearch;
+	}
+	public List<String> getDirectionHouse() {
+		return directionHouse;
+	}
+	public void setDirectionHouse(List<String> directionHouse) {
+		this.directionHouse = directionHouse;
+	}
+	public List<Integer> getMedia() {
+		return media;
+	}
+	public void setMedia(List<Integer> media) {
+		this.media = media;
+	}
+	public List<Integer> getNumBeds() {
+		return numBeds;
+	}
+	public void setNumBeds(List<Integer> numBeds) {
+		this.numBeds = numBeds;
+	}
 	
 	public String getWard() {
 		return ward;
