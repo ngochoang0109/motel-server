@@ -95,9 +95,12 @@ public class PostDetailServiceImpl implements PostDetailService{
 	}
 	
 	@Override
-	public List<RelatedNews> getRelatedNews(String province, String district) {
+	public List<RelatedNews> getRelatedNews(String province, String district, long idPost) {
 		List<Accomodation> accomodations = 
-				accomodationRepo.getRelatedNews(province,district, handleDateCommon.getCurrentDateTime()).stream().limit(6).toList();
+				accomodationRepo.getRelatedNews(province, 
+												district, 
+												handleDateCommon.getCurrentDateTime(),
+												idPost).stream().limit(6).toList();
 		List<RelatedNews> relatedNews = new LinkedList<RelatedNews>();
 		for (Accomodation acc : accomodations) {
 			RelatedNews r = new RelatedNews();

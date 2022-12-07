@@ -45,8 +45,9 @@ public class PostDetailController {
 	
 	@GetMapping(value = "/auth/get-related")
 	public ResponseEntity<?> getRelatedNews(@RequestParam("province") String province,
-			@RequestParam("district") String district){
-		List<RelatedNews> relatedNews = postDetailService.getRelatedNews(province,district);
+			@RequestParam("district") String district,
+			@RequestParam(value = "idPost", required = true) Long idPost){
+		List<RelatedNews> relatedNews = postDetailService.getRelatedNews(province,district, idPost);
 		return new ResponseEntity<List<RelatedNews>>(relatedNews, HttpStatus.OK);
 	}
 }

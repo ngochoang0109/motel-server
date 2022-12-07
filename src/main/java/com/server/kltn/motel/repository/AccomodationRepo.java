@@ -48,8 +48,10 @@ public interface AccomodationRepo extends JpaRepository<Accomodation, Long> {
 			+ " a.post.startedDate <=:currentDate and" 
 			+ " a.post.closedDate  >= :currentDate and"
 			+ " a.dicstrict= :district and"
+			+ " a.post.id != :idPost and"
 			+ " a.province = :province")
 	List<Accomodation> getRelatedNews(@Param("province") String province,
 			@Param("district") String district, 
-			@Param("currentDate") LocalDateTime currentDate);
+			@Param("currentDate") LocalDateTime currentDate,
+			@Param("idPost") long idPost);
 }

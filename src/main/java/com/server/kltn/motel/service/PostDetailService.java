@@ -11,5 +11,5 @@ public interface PostDetailService {
 	PostDetailPayload getPostDetail(long postId);
 	List<CountRelatedNews> getRelatedNEws(String type, String district);
 	List<HightExpenseRelated> getHightExpenseRelateds();
-	List<RelatedNews> getRelatedNews(String province, String district);
+	List<RelatedNews> getRelatedNews(String province, String district, long idPost);
 }
