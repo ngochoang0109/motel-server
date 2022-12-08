@@ -53,7 +53,7 @@ public class NewsManagement {
 	}
 	
 	@GetMapping("/news-management-list-data/show-reason")
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@PreAuthorize("hasRole('ROLE_USER')" + "||" +"hasRole('ROLE_ADMIN')")
 	public ResponseEntity<String> selReason(@RequestParam("id") long id) {
 		String result = newsManagementService.selReason(id);
 		return new ResponseEntity<String>(result, HttpStatus.OK);

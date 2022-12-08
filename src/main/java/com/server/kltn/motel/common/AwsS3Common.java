@@ -1,5 +1,4 @@
 package com.server.kltn.motel.common;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -7,12 +6,10 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
-
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.PutObjectRequest;
@@ -44,6 +41,7 @@ public class AwsS3Common {
 		return convFile;
 	}
 
+	@SuppressWarnings("null")
 	public String generateFileNameUnique(MultipartFile multipartFile) {
 		return new Date().getTime() + "-" + multipartFile.getOriginalFilename().replace(" ", "_");
 	}

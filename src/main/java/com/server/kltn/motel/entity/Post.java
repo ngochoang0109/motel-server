@@ -32,7 +32,7 @@ public class Post {
 	@Column(length =100000)
 	private String reason;
 	/*
-	 * 0: wait for approved 1: approved 2: rejected 3: closed
+	 * 0: wait for approved 1: approved 2: rejected 3: hidden
 	 */
 	private int status;
 	private LocalDateTime createdDate;

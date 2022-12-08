@@ -1,27 +1,16 @@
 package com.server.kltn.motel.sepecification;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Predicate;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
-
 import com.server.kltn.motel.api.user.payload.HomePayload.SearchParam;
-import com.server.kltn.motel.common.StringUtil;
 import com.server.kltn.motel.entity.Post;
 
 @Component
 public class SearchSepecification {
-	@Autowired
-	private StringUtil stringUtil;
 	
 	public Specification<Post> searchNewsByParamQuery(SearchParam searchParam, LocalDateTime currenTime) {
 		

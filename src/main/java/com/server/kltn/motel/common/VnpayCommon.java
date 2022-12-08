@@ -8,13 +8,6 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class VnpayCommon {
-	private final String vnpVersion="2.1.0";
-	private final String vnpTmnCode="EF9MJL2L";
-	private final String vnpBankCode="vnp_BankCode=VNBANK";
-	private final String vnpCurrCode="VND";
-	private final String vnpLocale="vn";
-	private final String vnpReturnUrl="http://localhost:8080/payment/result";
-	private final String vnpHashSecret="ZRZPTEOVVAJTIUBWMQICUPBRBFTJVDQA";
 	public static String vnpCommand = "pay";
 	
 	public String getRandomNumber(int len) {

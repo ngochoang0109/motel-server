@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -139,5 +140,13 @@ public class NewsManagementController {
 		Page<NewsCard> posts = newsManagementService.getNewsByTextSearch(pageNo, pageSize, field, mode,
 				authentication.getName(), status, textSearch, filterParam);
 		return new ResponseEntity<Page<NewsCard>>(posts, HttpStatus.OK);
+	}
+	
+	
+	@PostMapping("/news-management/update-hidden-post")
+	@PreAuthorize("hasRole('ROLE_USER')" + "||" + "hasRole('ROLE_ADMIN')")
+	public ResponseEntity<String> updateHiddenStatusPost(@RequestParam("id") long id) {
+		newsManagementService.updateHiddenToPost(id);
+		return new ResponseEntity<String>(HttpStatus.OK);
 	}
 }

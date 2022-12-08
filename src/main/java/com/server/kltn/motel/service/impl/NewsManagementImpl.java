@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -15,6 +17,7 @@ import com.server.kltn.motel.common.HandleDateCommon;
 import com.server.kltn.motel.common.PageAndSortCommon;
 import com.server.kltn.motel.constant.NewsModeConstant;
 import com.server.kltn.motel.entity.Post;
+import com.server.kltn.motel.exception.BadRequestException;
 import com.server.kltn.motel.mapper.PostMapper;
 import com.server.kltn.motel.page.Page;
 import com.server.kltn.motel.repository.PostRepository;
@@ -348,6 +351,7 @@ public class NewsManagementImpl implements NewsManagementService {
 	}
 
 	@Override
+	@Transactional
 	public Boolean insertReason(RejectDatasource rejectDatasource) {
 		try {
 			Post post = postRepository.getById(rejectDatasource.getId());
@@ -363,5 +367,17 @@ public class NewsManagementImpl implements NewsManagementService {
 	@Override
 	public String selReason(long id) {
 		return postRepository.getById(id).getReason();
+	}
+	
+	@Override
+	@Transactional
+	public void updateHiddenToPost(long id) {
+		try {
+			Post post = postRepository.getById(id);
+			post.setStatus(3);
+			postRepository.save(post);
+		} catch (Exception e) {
+			throw new BadRequestException("Cập nhật không thành công, vui lòng thử lại");
+		}
 	}
 }
