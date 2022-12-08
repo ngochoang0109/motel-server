@@ -374,7 +374,11 @@ public class NewsManagementImpl implements NewsManagementService {
 	public void updateHiddenToPost(long id) {
 		try {
 			Post post = postRepository.getById(id);
-			post.setStatus(3);
+			if(post.getStatus() == 1) {
+				post.setStatus(3);
+			}else {
+				post.setStatus(1);
+			}
 			postRepository.save(post);
 		} catch (Exception e) {
 			throw new BadRequestException("Cập nhật không thành công, vui lòng thử lại");
