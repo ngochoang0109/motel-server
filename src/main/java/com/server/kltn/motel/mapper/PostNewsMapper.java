@@ -5,8 +5,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
-import com.server.kltn.motel.api.user.payload.AccomodationInfor;
-import com.server.kltn.motel.api.user.payload.NewsInfor;
+import com.server.kltn.motel.api.user.payload.NewsFormPayload.AccomodationInfor;
+import com.server.kltn.motel.api.user.payload.NewsFormPayload.NewsInfor;
 import com.server.kltn.motel.entity.Accomodation;
 import com.server.kltn.motel.entity.Image;
 import com.server.kltn.motel.entity.Post;

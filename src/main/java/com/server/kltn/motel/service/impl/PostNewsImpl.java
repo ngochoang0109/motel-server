@@ -1,8 +1,10 @@
 package com.server.kltn.motel.service.impl;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -10,9 +12,11 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import com.server.kltn.motel.api.user.payload.AccomodationInfor;
-import com.server.kltn.motel.api.user.payload.CostCalculate;
-import com.server.kltn.motel.api.user.payload.NewsInfor;
+
+import com.server.kltn.motel.api.user.payload.NewsFormPayload.AccomodationInfor;
+import com.server.kltn.motel.api.user.payload.NewsFormPayload.CostCalculate;
+import com.server.kltn.motel.api.user.payload.NewsFormPayload.DetailNews;
+import com.server.kltn.motel.api.user.payload.NewsFormPayload.NewsInfor;
 import com.server.kltn.motel.common.AwsS3Common;
 import com.server.kltn.motel.common.HandleDateCommon;
 import com.server.kltn.motel.constant.DateTimeConstant;
@@ -94,7 +98,7 @@ public class PostNewsImpl implements PostNewsService {
 			post.setApprovedDate(null);
 			post.setIsPayment(false);
 			
-			// set Accomodation Object
+			// set Accommodation Object
 			Accomodation accomodation = postNewsMapper.mapAccomodationInforToAccomodation(accomodationInfor);
 			List<TypeOfAcc> typeOfAccs = typeOfAccRepository
 					.findByIdIn(new ArrayList<Long>(Arrays.asList(accomodationInfor.getTypesOfAcc())));
@@ -125,6 +129,163 @@ public class PostNewsImpl implements PostNewsService {
 		catch (Exception e) {
 			System.out.print(e.getMessage());
 			throw new ServerException("Lỗi tạo tin, vui lòng điền đầy đủ thông tin");
+		}
+	}
+	
+	@Override
+	public DetailNews getDetailNews(long postId) {
+		
+		DetailNews detailNews = new DetailNews();
+		AccomodationInfor accomodationInfor = new AccomodationInfor();
+		NewsInfor newsInfor = new NewsInfor();
+		
+		Post post = postRepository.getById(postId);
+		
+		accomodationInfor.setAirConditioner(post.getAccomodation().isAirConditioner());
+		accomodationInfor.setArea(post.getAccomodation().getArea());
+		accomodationInfor.setBalcony(post.getAccomodation().isBalcony());
+		accomodationInfor.setDirectionBalcony(post.getAccomodation().getDirectionBalcony());
+		accomodationInfor.setDirectionHouse(post.getAccomodation().getDirectionHouse());
+		accomodationInfor.setDistrict(post.getAccomodation().getDicstrict());
+		accomodationInfor.setFloorNumber(post.getAccomodation().getFloorNumber());
+		accomodationInfor.setFurniture(post.getAccomodation().getFurniture());
+		accomodationInfor.setHeater(post.getAccomodation().isHeater());
+		accomodationInfor.setInternet(post.getAccomodation().isInternet());
+		accomodationInfor.setNumOfBed(post.getAccomodation().getNumOfBed());
+		accomodationInfor.setNumOfFloor(post.getAccomodation().getNumOfFloor());
+		accomodationInfor.setNumOfToilet(post.getAccomodation().getNumOfToilet());
+		accomodationInfor.setParking(post.getAccomodation().isParking());
+		accomodationInfor.setPrice(post.getAccomodation().getPrice());
+		accomodationInfor.setProvince(post.getAccomodation().getProvince());
+		accomodationInfor.setStreet(post.getAccomodation().getStreet());
+		accomodationInfor.setTower(post.getAccomodation().getTower());
+		accomodationInfor.setTypesOfAcc(post.getAccomodation().getTypeOfAcc().getId());
+		accomodationInfor.setWard(post.getAccomodation().getWard());
+		
+		newsInfor.setTitle(post.getTitle());
+		newsInfor.setDescription(post.getDescription());
+		
+		List<String> videos = new LinkedList<>();
+		for (Video video : post.getVideos()) {
+			videos.add(video.getSource());
+		}
+		newsInfor.setVideos(videos);
+		
+		List<String> images = new LinkedList<>();
+		for (Image image : post.getImages()) {
+			images.add(image.getSource());
+		}
+		
+		detailNews.setAccomodationInfor(accomodationInfor);
+		detailNews.setNewsInfor(newsInfor);
+		detailNews.setImages(images);
+		
+		return detailNews;
+	}
+	
+	@Override
+	@Transactional
+	public void extendedTimeToPost(long postId, CostCalculate costCalculate, String username) {
+		try {
+			// set Post Object
+			Post post = postRepository.getById(postId);
+			
+			Post extendedPost = new Post();
+			extendedPost.setCreatedDate(handleDateCommon.getCurrentDateTime());
+			extendedPost.setStartedDate(handleDateCommon.convertStringDateToLocalDateTime(costCalculate.getStartedDate()).plusHours(DateTimeConstant.UtcTimeZoneVN));
+			LocalDateTime closedDate = handleDateCommon.convertStringDateToLocalDateTime(costCalculate.getStartedDate()).plusHours(DateTimeConstant.UtcTimeZoneVN)
+					.plusDays(costCalculate.getNumDatePost());
+			extendedPost.setClosedDate(closedDate);
+			
+			List<Expense> expenses= expenseRepository.findByIdIn(
+					new ArrayList<Long>(Arrays.asList(costCalculate.getTypeOfPost())));
+			extendedPost.setExpense(expenses.get(0));
+			
+			extendedPost.setDiscount(discountRepository.getByCode(costCalculate.getDiscount()));
+			
+			User user= userRepository.findByUsernameOrEmail(username,username)
+							.orElseThrow(() -> new ResourceNotFoundException("user", "username", username));
+			extendedPost.setUser(user);
+			extendedPost.setStatus(1);
+			extendedPost.setApprovedDate(handleDateCommon.getCurrentDateTime());
+			extendedPost.setIsPayment(false);
+			extendedPost.setTitle(post.getTitle());
+			extendedPost.setDescription(post.getDescription());
+			
+			int numDate = (int) ChronoUnit.DAYS.between(extendedPost.getStartedDate(), extendedPost.getClosedDate());
+			long amountPost = extendedPost.getExpense().getCost() * numDate;
+			long amountDiscounted = 0;
+			if (extendedPost.getDiscount() != null) {
+				amountDiscounted = (amountPost * extendedPost.getDiscount().getPercent()) / 100;
+				if (amountDiscounted > extendedPost.getDiscount().getPrice()) {
+					amountDiscounted = extendedPost.getDiscount().getPrice();
+					amountPost = amountPost - extendedPost.getDiscount().getPrice();
+				} else {
+					amountPost = amountPost - amountDiscounted;
+				}
+			}
+			extendedPost.setTotalAmount(amountPost);
+			
+			// set Accommodation Object
+			Accomodation accomodation = new Accomodation();
+			accomodation.setAirConditioner(post.getAccomodation().isAirConditioner());
+			accomodation.setArea(post.getAccomodation().getArea());
+			accomodation.setBalcony(post.getAccomodation().isBalcony());
+			accomodation.setDicstrict(post.getAccomodation().getDicstrict());
+			accomodation.setDirectionBalcony(post.getAccomodation().getDirectionBalcony());
+			accomodation.setDirectionHouse(post.getAccomodation().getDirectionHouse());
+			accomodation.setFloorNumber(post.getAccomodation().getFloorNumber());
+			accomodation.setFurniture(post.getAccomodation().getFurniture());
+			accomodation.setHeater(post.getAccomodation().isHeater());
+			accomodation.setInternet(post.getAccomodation().isInternet());
+			accomodation.setNumOfBed(post.getAccomodation().getNumOfBed());
+			accomodation.setNumOfFloor(post.getAccomodation().getNumOfFloor());
+			accomodation.setNumOfToilet(post.getAccomodation().getNumOfToilet());
+			accomodation.setParking(post.getAccomodation().isParking());
+			accomodation.setPrice(post.getAccomodation().getPrice());
+			accomodation.setProvince(post.getAccomodation().getProvince());
+			accomodation.setStreet(post.getAccomodation().getStreet());
+			accomodation.setTower(post.getAccomodation().getTower());
+			accomodation.setTypeOfAcc(post.getAccomodation().getTypeOfAcc());
+			accomodation.setWard(post.getAccomodation().getWard());
+			
+			extendedPost.setAccomodation(accomodation);
+			accomodation.setPost(extendedPost);
+			extendedPost.setImages(post.getImages());
+			extendedPost.setVideos(post.getVideos());
+			
+			post.setStatus(4);
+			post = postRepository.save(post);
+			
+			List<Image> images = new LinkedList<>();
+			if (post.getImages()!=null) {
+				for (Image image : post.getImages()) {
+					Image newImage = new Image();
+					newImage.setSource(image.getSource());
+					newImage.setType(image.getType());
+					newImage.setPost(extendedPost);
+					images.add(newImage);
+				}
+			}
+			extendedPost.setImages(images);
+			
+			List<Video> videos = new LinkedList<>();
+			if (post.getVideos() != null) {
+				for (Video video : post.getVideos()) {
+					Video newVideo = new Video();
+					newVideo.setSource(video.getSource());
+					newVideo.setPost(extendedPost);
+					videos.add(newVideo);
+				}
+			}
+			extendedPost.setVideos(videos);
+			
+			extendedPost=postRepository.save(extendedPost);
+
+		}
+		catch (Exception e) {
+			System.out.print(e.getMessage());
+			throw new ServerException("Gia hạn bài viết thất bại!!");
 		}
 	}
 }

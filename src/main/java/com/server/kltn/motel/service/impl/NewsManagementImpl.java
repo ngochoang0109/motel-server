@@ -384,4 +384,16 @@ public class NewsManagementImpl implements NewsManagementService {
 			throw new BadRequestException("Cập nhật không thành công, vui lòng thử lại");
 		}
 	}
+	
+	@Override
+	@Transactional
+	public void deletedPost(long postId) {
+		try {
+			Post post = postRepository.getById(postId);
+			post.setStatus(4);
+			postRepository.save(post);
+		} catch (Exception e) {
+			throw new BadRequestException("Xóa không thành công, vui lòng thử lại!!!");
+		}
+	}
 }

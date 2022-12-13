@@ -24,4 +24,5 @@ public interface NewsManagementService {
 	Boolean insertReason(RejectDatasource rejectDatasource);
 	String selReason(long id);
 	void updateHiddenToPost(long id);
+	void deletedPost(long postId);
 }

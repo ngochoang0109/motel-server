@@ -32,7 +32,8 @@ public interface PostRepository extends JpaRepository<Post, Long>, JpaSpecificat
 	
 	@Query("SELECT p"
 			+ " FROM Post p"
-			+ " WHERE p.user.username=:username")
+			+ " WHERE p.user.username=:username and"
+			+ " p.status != 4")
 	Page<Post> getNewsOfUser(Pageable pageable, @Param("username") String username);
 	
 	@Query("SELECT p"

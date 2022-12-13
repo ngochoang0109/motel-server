@@ -1,4 +1,4 @@
-package com.server.kltn.motel.api.user.payload;
+package com.server.kltn.motel.api.user.payload.NewsFormPayload;
 
 import java.util.ArrayList;
 import java.util.List;
