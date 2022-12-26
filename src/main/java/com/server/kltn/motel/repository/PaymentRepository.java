@@ -19,7 +19,9 @@ public interface PaymentRepository extends JpaRepository<Payment, Long>{
 	
 	@Query("SELECT p "
 			+ "FROM Payment p "
-			+ "WHERE p.status != 0 "
-			+ " AND p.user.username= :username")
+			+ "WHERE "
+//			+ "p.status != 0 "
+//			+ " AND "
+			+ "p.user.username= :username")
 	List<Payment> getPaymentHistory(@Param("username") String username);
 }

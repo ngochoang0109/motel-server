@@ -27,6 +27,7 @@ import com.server.kltn.motel.entity.Post;
 import com.server.kltn.motel.entity.TypeOfAcc;
 import com.server.kltn.motel.entity.User;
 import com.server.kltn.motel.entity.Video;
+import com.server.kltn.motel.exception.BadRequestException;
 import com.server.kltn.motel.exception.ResourceNotFoundException;
 import com.server.kltn.motel.exception.ServerException;
 import com.server.kltn.motel.mapper.PostNewsMapper;
@@ -50,28 +51,28 @@ public class PostNewsImpl implements PostNewsService {
 
 	@Autowired
 	private HandleDateCommon handleDateCommon;
-	
+
 	@Autowired
 	private AwsS3Common awsS3Common;
 
 	@Autowired
 	private ExpenseRepository expenseRepository;
-	
+
 	@Autowired
 	private UserRepository userRepository;
-	
+
 	@Autowired
 	private PostRepository postRepository;
-	
+
 	@Autowired
 	private ImageRepository imageRepository;
-	
+
 	@Autowired
 	private VideoRepository videoRepository;
-	
+
 	@Autowired
 	private DiscountRepository discountRepository;
-	
+
 	@Override
 	@Transactional
 	public void createNews(NewsInfor newsInfor, AccomodationInfor accomodationInfor, CostCalculate costCalculate,
@@ -80,34 +81,35 @@ public class PostNewsImpl implements PostNewsService {
 			// set Post Object
 			Post post = postNewsMapper.mapNewsInforToPost(newsInfor);
 			post.setCreatedDate(handleDateCommon.getCurrentDateTime());
-			post.setStartedDate(handleDateCommon.convertStringDateToLocalDateTime(costCalculate.getStartedDate()).plusHours(DateTimeConstant.UtcTimeZoneVN));
-			LocalDateTime closedDate = handleDateCommon.convertStringDateToLocalDateTime(costCalculate.getStartedDate()).plusHours(DateTimeConstant.UtcTimeZoneVN)
-					.plusDays(costCalculate.getNumDatePost());
+			post.setStartedDate(handleDateCommon.convertStringDateToLocalDateTime(costCalculate.getStartedDate())
+					.plusHours(DateTimeConstant.UtcTimeZoneVN));
+			LocalDateTime closedDate = handleDateCommon.convertStringDateToLocalDateTime(costCalculate.getStartedDate())
+					.plusHours(DateTimeConstant.UtcTimeZoneVN).plusDays(costCalculate.getNumDatePost());
 			post.setClosedDate(closedDate);
-			
-			List<Expense> expenses= expenseRepository.findByIdIn(
-					new ArrayList<Long>(Arrays.asList(newsInfor.getTypeOfPost())));
+
+			List<Expense> expenses = expenseRepository
+					.findByIdIn(new ArrayList<Long>(Arrays.asList(newsInfor.getTypeOfPost())));
 			post.setExpense(expenses.get(0));
-			
+
 			post.setDiscount(discountRepository.getByCode(newsInfor.getDiscount()));
-			
-			User user= userRepository.findByUsernameOrEmail(username,username)
-							.orElseThrow(() -> new ResourceNotFoundException("user", "username", username));
+
+			User user = userRepository.findByUsernameOrEmail(username, username)
+					.orElseThrow(() -> new ResourceNotFoundException("user", "username", username));
 			post.setUser(user);
 			post.setStatus(0);
 			post.setApprovedDate(null);
 			post.setIsPayment(false);
-			
+
 			// set Accommodation Object
 			Accomodation accomodation = postNewsMapper.mapAccomodationInforToAccomodation(accomodationInfor);
 			List<TypeOfAcc> typeOfAccs = typeOfAccRepository
 					.findByIdIn(new ArrayList<Long>(Arrays.asList(accomodationInfor.getTypesOfAcc())));
 			accomodation.setTypeOfAcc(typeOfAccs.get(0));
-			
+
 			post.setAccomodation(accomodation);
 			accomodation.setPost(post);
-			post=postRepository.save(post);
-			
+			post = postRepository.save(post);
+
 			if (images != null) {
 				// set value for image
 				List<String> urlImages = awsS3Common.uploadMulFile(images);
@@ -116,31 +118,30 @@ public class PostNewsImpl implements PostNewsService {
 					imageRepository.save(image);
 				}
 			}
-			
-			if (newsInfor.getVideos()!=null) {
+
+			if (newsInfor.getVideos() != null) {
 				List<Video> videos = new ArrayList<>();
 				for (String strV : newsInfor.getVideos()) {
 					videos.add(new Video(strV, post));
 				}
-				List<Video> newVideos= videoRepository.saveAll(videos);
+				List<Video> newVideos = videoRepository.saveAll(videos);
 				post.setVideos(newVideos);
 			}
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			System.out.print(e.getMessage());
 			throw new ServerException("Lỗi tạo tin, vui lòng điền đầy đủ thông tin");
 		}
 	}
-	
+
 	@Override
 	public DetailNews getDetailNews(long postId) {
-		
+
 		DetailNews detailNews = new DetailNews();
 		AccomodationInfor accomodationInfor = new AccomodationInfor();
 		NewsInfor newsInfor = new NewsInfor();
-		
+
 		Post post = postRepository.getById(postId);
-		
+
 		accomodationInfor.setAirConditioner(post.getAccomodation().isAirConditioner());
 		accomodationInfor.setArea(post.getAccomodation().getArea());
 		accomodationInfor.setBalcony(post.getAccomodation().isBalcony());
@@ -161,57 +162,59 @@ public class PostNewsImpl implements PostNewsService {
 		accomodationInfor.setTower(post.getAccomodation().getTower());
 		accomodationInfor.setTypesOfAcc(post.getAccomodation().getTypeOfAcc().getId());
 		accomodationInfor.setWard(post.getAccomodation().getWard());
-		
+
 		newsInfor.setTitle(post.getTitle());
 		newsInfor.setDescription(post.getDescription());
-		
+
 		List<String> videos = new LinkedList<>();
 		for (Video video : post.getVideos()) {
-			videos.add(video.getSource());
+			videos.add("https://www.youtube.com/watch?v=" + video.getSource());
 		}
 		newsInfor.setVideos(videos);
-		
+
 		List<String> images = new LinkedList<>();
 		for (Image image : post.getImages()) {
 			images.add(image.getSource());
 		}
-		
+
 		detailNews.setAccomodationInfor(accomodationInfor);
 		detailNews.setNewsInfor(newsInfor);
 		detailNews.setImages(images);
-		
+
 		return detailNews;
 	}
-	
+
 	@Override
 	@Transactional
 	public void extendedTimeToPost(long postId, CostCalculate costCalculate, String username) {
 		try {
 			// set Post Object
 			Post post = postRepository.getById(postId);
-			
+
 			Post extendedPost = new Post();
 			extendedPost.setCreatedDate(handleDateCommon.getCurrentDateTime());
-			extendedPost.setStartedDate(handleDateCommon.convertStringDateToLocalDateTime(costCalculate.getStartedDate()).plusHours(DateTimeConstant.UtcTimeZoneVN));
-			LocalDateTime closedDate = handleDateCommon.convertStringDateToLocalDateTime(costCalculate.getStartedDate()).plusHours(DateTimeConstant.UtcTimeZoneVN)
-					.plusDays(costCalculate.getNumDatePost());
+			extendedPost
+					.setStartedDate(handleDateCommon.convertStringDateToLocalDateTime(costCalculate.getStartedDate())
+							.plusHours(DateTimeConstant.UtcTimeZoneVN));
+			LocalDateTime closedDate = handleDateCommon.convertStringDateToLocalDateTime(costCalculate.getStartedDate())
+					.plusHours(DateTimeConstant.UtcTimeZoneVN).plusDays(costCalculate.getNumDatePost());
 			extendedPost.setClosedDate(closedDate);
-			
-			List<Expense> expenses= expenseRepository.findByIdIn(
-					new ArrayList<Long>(Arrays.asList(costCalculate.getTypeOfPost())));
+
+			List<Expense> expenses = expenseRepository
+					.findByIdIn(new ArrayList<Long>(Arrays.asList(costCalculate.getTypeOfPost())));
 			extendedPost.setExpense(expenses.get(0));
-			
+
 			extendedPost.setDiscount(discountRepository.getByCode(costCalculate.getDiscount()));
-			
-			User user= userRepository.findByUsernameOrEmail(username,username)
-							.orElseThrow(() -> new ResourceNotFoundException("user", "username", username));
+
+			User user = userRepository.findByUsernameOrEmail(username, username)
+					.orElseThrow(() -> new ResourceNotFoundException("user", "username", username));
 			extendedPost.setUser(user);
 			extendedPost.setStatus(1);
 			extendedPost.setApprovedDate(handleDateCommon.getCurrentDateTime());
 			extendedPost.setIsPayment(false);
 			extendedPost.setTitle(post.getTitle());
 			extendedPost.setDescription(post.getDescription());
-			
+
 			int numDate = (int) ChronoUnit.DAYS.between(extendedPost.getStartedDate(), extendedPost.getClosedDate());
 			long amountPost = extendedPost.getExpense().getCost() * numDate;
 			long amountDiscounted = 0;
@@ -225,7 +228,7 @@ public class PostNewsImpl implements PostNewsService {
 				}
 			}
 			extendedPost.setTotalAmount(amountPost);
-			
+
 			// set Accommodation Object
 			Accomodation accomodation = new Accomodation();
 			accomodation.setAirConditioner(post.getAccomodation().isAirConditioner());
@@ -248,17 +251,17 @@ public class PostNewsImpl implements PostNewsService {
 			accomodation.setTower(post.getAccomodation().getTower());
 			accomodation.setTypeOfAcc(post.getAccomodation().getTypeOfAcc());
 			accomodation.setWard(post.getAccomodation().getWard());
-			
+
 			extendedPost.setAccomodation(accomodation);
 			accomodation.setPost(extendedPost);
 			extendedPost.setImages(post.getImages());
 			extendedPost.setVideos(post.getVideos());
-			
+
 			post.setStatus(4);
 			post = postRepository.save(post);
-			
+
 			List<Image> images = new LinkedList<>();
-			if (post.getImages()!=null) {
+			if (post.getImages() != null) {
 				for (Image image : post.getImages()) {
 					Image newImage = new Image();
 					newImage.setSource(image.getSource());
@@ -268,7 +271,7 @@ public class PostNewsImpl implements PostNewsService {
 				}
 			}
 			extendedPost.setImages(images);
-			
+
 			List<Video> videos = new LinkedList<>();
 			if (post.getVideos() != null) {
 				for (Video video : post.getVideos()) {
@@ -279,13 +282,89 @@ public class PostNewsImpl implements PostNewsService {
 				}
 			}
 			extendedPost.setVideos(videos);
-			
-			extendedPost=postRepository.save(extendedPost);
-
-		}
-		catch (Exception e) {
+			extendedPost = postRepository.save(extendedPost);
+		} catch (Exception e) {
 			System.out.print(e.getMessage());
 			throw new ServerException("Gia hạn bài viết thất bại!!");
+		}
+	}
+
+	@Override
+	@Transactional
+	public void editNews(NewsInfor newsInfor, AccomodationInfor accomodationInfor, CostCalculate costCalculate,
+			List<MultipartFile> images, String username, long postId) {
+		try {
+			imageRepository.deletedImagesOfPost(postId);
+			videoRepository.deletedVideosOfPost(postId);
+			Post post = postRepository.getById(postId);
+			// set Post Object
+			post.setTitle(newsInfor.getTitle());
+			post.setDescription(newsInfor.getDescription());
+			post.setTotalAmount(newsInfor.getTotalAmount());
+			post.setCreatedDate(handleDateCommon.getCurrentDateTime());
+			post.setStartedDate(handleDateCommon.convertStringDateToLocalDateTime(costCalculate.getStartedDate())
+					.plusHours(DateTimeConstant.UtcTimeZoneVN));
+			LocalDateTime closedDate = handleDateCommon.convertStringDateToLocalDateTime(costCalculate.getStartedDate())
+					.plusHours(DateTimeConstant.UtcTimeZoneVN).plusDays(costCalculate.getNumDatePost());
+			post.setClosedDate(closedDate);
+
+			List<Expense> expenses = expenseRepository
+					.findByIdIn(new ArrayList<Long>(Arrays.asList(newsInfor.getTypeOfPost())));
+			post.setExpense(expenses.get(0));
+			post.setDiscount(discountRepository.getByCode(newsInfor.getDiscount()));
+			User user = userRepository.findByUsernameOrEmail(username, username)
+					.orElseThrow(() -> new ResourceNotFoundException("user", "username", username));
+			post.setUser(user);
+			post.setStatus(0);
+			post.setApprovedDate(null);
+			post.setIsPayment(false);
+
+			// set Accommodation Object
+			Accomodation accomodation = post.getAccomodation();
+			accomodation.setAirConditioner(accomodationInfor.isAirConditioner());
+			accomodation.setArea(accomodationInfor.getArea());
+			accomodation.setBalcony(accomodationInfor.isBalcony());
+			accomodation.setDicstrict(accomodationInfor.getDistrict());
+			accomodation.setDirectionBalcony(accomodationInfor.getDirectionBalcony());
+			accomodation.setDirectionHouse(accomodationInfor.getDirectionHouse());
+			accomodation.setFloorNumber(accomodationInfor.getFloorNumber());
+			accomodation.setFurniture(accomodationInfor.getFurniture());
+			accomodation.setHeater(accomodationInfor.isHeater());
+			accomodation.setInternet(accomodationInfor.isInternet());
+			accomodation.setNumOfBed(accomodationInfor.getNumOfBed());
+			accomodation.setNumOfFloor(accomodationInfor.getNumOfFloor());
+			accomodation.setNumOfToilet(accomodationInfor.getNumOfToilet());
+			accomodation.setParking(accomodationInfor.isParking());
+			accomodation.setPrice(accomodationInfor.getPrice());
+			accomodation.setProvince(accomodationInfor.getProvince());
+			accomodation.setStreet(accomodationInfor.getStreet());
+			accomodation.setTower(accomodationInfor.getTower());
+			accomodation.setWard(accomodationInfor.getWard());
+			List<TypeOfAcc> typeOfAccs = typeOfAccRepository
+					.findByIdIn(new ArrayList<Long>(Arrays.asList(accomodationInfor.getTypesOfAcc())));
+			accomodation.setTypeOfAcc(typeOfAccs.get(0));
+			post = postRepository.save(post);
+
+			if (images != null) {
+				// set value for image
+				List<String> urlImages = awsS3Common.uploadMulFile(images);
+				for (Image image : postNewsMapper.convertUrlImagesToImages(urlImages)) {
+					image.setPost(post);
+					imageRepository.save(image);
+				}
+			}
+
+			if (newsInfor.getVideos() != null) {
+				List<Video> videos = new ArrayList<>();
+				for (String strV : newsInfor.getVideos()) {
+					videos.add(new Video(strV, post));
+				}
+				List<Video> newVideos = videoRepository.saveAll(videos);
+				post.setVideos(newVideos);
+			}
+		} catch (Exception e) {
+			System.out.print(e.getMessage());
+			throw new BadRequestException("Lỗi chỉnh sữa, vui lòng điền đầy đủ thông tin");
 		}
 	}
 }

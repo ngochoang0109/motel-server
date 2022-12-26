@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.server.kltn.motel.api.user.payload.FilterParam;
 import com.server.kltn.motel.api.user.payload.NewsCard;
+import com.server.kltn.motel.common.HandleDateCommon;
 import com.server.kltn.motel.constant.PageAndSortConstant;
 import com.server.kltn.motel.page.Page;
 import com.server.kltn.motel.service.NewsManagementService;
@@ -24,6 +25,9 @@ public class NewsManagementController {
 
 	@Autowired
 	private NewsManagementService newsManagementService;
+	
+	@Autowired
+	private HandleDateCommon handleDateCommon;
 
 	@GetMapping(value = "/news-management/get-all-of-user")
 	@PreAuthorize("hasRole('ROLE_USER')" + "||" + "hasRole('ROLE_ADMIN')")
@@ -32,9 +36,25 @@ public class NewsManagementController {
 			@RequestParam(value = "pageSize", defaultValue = PageAndSortConstant.PAGE_SIZE, required = false) int pageSize,
 			@RequestParam(value = "sort", defaultValue = PageAndSortConstant.SORT, required = false) String field,
 			@RequestParam(value = "mode", defaultValue = PageAndSortConstant.MODE, required = false) int mode,
+			@RequestParam(value = "textSearch", required = false) String textSearch,
+			@RequestParam(value = "startedDate", required = false) String startedDate,
+			@RequestParam(value = "closedDate", required = false) String closedDate,
+			@RequestParam(value = "typeOfAcc", required = false) Long typeOfAcc,
+			@RequestParam(value = "typeOfNews", required = false) Long typeOfNews,
+			@RequestParam(value = "province", required = false) String province,
+			@RequestParam(value = "district", required = false) String district,
 			Authentication authentication) {
+		FilterParam filterParam = new FilterParam();
+		filterParam.setStartedDate(handleDateCommon.convertStringDateToLocalDateTime(startedDate));
+		filterParam.setDistrict(district.equals("") ? null : district);
+		filterParam.setPageNo(pageNo);
+		filterParam.setProvince(province.equals("") ? null : province);
+		filterParam.setClosedDate(handleDateCommon.convertStringDateToLocalDateTime(closedDate));
+		filterParam.setTextSearch(textSearch.equals("") ? null : textSearch);
+		filterParam.setTypeOfAcc(typeOfAcc == 0 ? null : typeOfAcc);
+		filterParam.setTypeOfNews(typeOfNews == 0 ? null : typeOfNews);
 		Page<NewsCard> posts = newsManagementService.getAllNewsOfUser(pageNo, pageSize, field, mode,
-				authentication.getName());
+				authentication.getName(), filterParam);
 		return new ResponseEntity<Page<NewsCard>>(posts, HttpStatus.OK);
 	}
 
@@ -45,9 +65,25 @@ public class NewsManagementController {
 			@RequestParam(value = "pageSize", defaultValue = PageAndSortConstant.PAGE_SIZE, required = false) int pageSize,
 			@RequestParam(value = "sort", defaultValue = PageAndSortConstant.SORT, required = false) String field,
 			@RequestParam(value = "mode", defaultValue = PageAndSortConstant.MODE, required = false) int mode,
+			@RequestParam(value = "textSearch", required = false) String textSearch,
+			@RequestParam(value = "startedDate", required = false) String startedDate,
+			@RequestParam(value = "closedDate", required = false) String closedDate,
+			@RequestParam(value = "typeOfAcc", required = false) Long typeOfAcc,
+			@RequestParam(value = "typeOfNews", required = false) Long typeOfNews,
+			@RequestParam(value = "province", required = false) String province,
+			@RequestParam(value = "district", required = false) String district,
 			Authentication authentication) {
+		FilterParam filterParam = new FilterParam();
+		filterParam.setStartedDate(handleDateCommon.convertStringDateToLocalDateTime(startedDate));
+		filterParam.setDistrict(district.equals("") ? null : district);
+		filterParam.setPageNo(pageNo);
+		filterParam.setProvince(province.equals("") ? null : province);
+		filterParam.setClosedDate(handleDateCommon.convertStringDateToLocalDateTime(closedDate));
+		filterParam.setTextSearch(textSearch.equals("") ? null : textSearch);
+		filterParam.setTypeOfAcc(typeOfAcc == 0 ? null : typeOfAcc);
+		filterParam.setTypeOfNews(typeOfNews == 0 ? null : typeOfNews);
 		Page<NewsCard> posts = newsManagementService.getNewsWaitingAproved(pageNo, pageSize, field, mode,
-				authentication.getName());
+				authentication.getName(), filterParam);
 		return new ResponseEntity<Page<NewsCard>>(posts, HttpStatus.OK);
 	}
 
@@ -58,9 +94,25 @@ public class NewsManagementController {
 			@RequestParam(value = "pageSize", defaultValue = PageAndSortConstant.PAGE_SIZE, required = false) int pageSize,
 			@RequestParam(value = "sort", defaultValue = PageAndSortConstant.SORT, required = false) String field,
 			@RequestParam(value = "mode", defaultValue = PageAndSortConstant.MODE, required = false) int mode,
+			@RequestParam(value = "textSearch", required = false) String textSearch,
+			@RequestParam(value = "startedDate", required = false) String startedDate,
+			@RequestParam(value = "closedDate", required = false) String closedDate,
+			@RequestParam(value = "typeOfAcc", required = false) Long typeOfAcc,
+			@RequestParam(value = "typeOfNews", required = false) Long typeOfNews,
+			@RequestParam(value = "province", required = false) String province,
+			@RequestParam(value = "district", required = false) String district,
 			Authentication authentication) {
+		FilterParam filterParam = new FilterParam();
+		filterParam.setStartedDate(handleDateCommon.convertStringDateToLocalDateTime(startedDate));
+		filterParam.setDistrict(district.equals("") ? null : district);
+		filterParam.setPageNo(pageNo);
+		filterParam.setProvince(province.equals("") ? null : province);
+		filterParam.setClosedDate(handleDateCommon.convertStringDateToLocalDateTime(closedDate));
+		filterParam.setTextSearch(textSearch.equals("") ? null : textSearch);
+		filterParam.setTypeOfAcc(typeOfAcc == 0 ? null : typeOfAcc);
+		filterParam.setTypeOfNews(typeOfNews == 0 ? null : typeOfNews);
 		Page<NewsCard> posts = newsManagementService.getNewsRejectOfUser(pageNo, pageSize, field, mode,
-				authentication.getName());
+				authentication.getName(), filterParam);
 		return new ResponseEntity<Page<NewsCard>>(posts, HttpStatus.OK);
 	}
 
@@ -71,9 +123,25 @@ public class NewsManagementController {
 			@RequestParam(value = "pageSize", defaultValue = PageAndSortConstant.PAGE_SIZE, required = false) int pageSize,
 			@RequestParam(value = "sort", defaultValue = PageAndSortConstant.SORT, required = false) String field,
 			@RequestParam(value = "mode", defaultValue = PageAndSortConstant.MODE, required = false) int mode,
+			@RequestParam(value = "textSearch", required = false) String textSearch,
+			@RequestParam(value = "startedDate", required = false) String startedDate,
+			@RequestParam(value = "closedDate", required = false) String closedDate,
+			@RequestParam(value = "typeOfAcc", required = false) Long typeOfAcc,
+			@RequestParam(value = "typeOfNews", required = false) Long typeOfNews,
+			@RequestParam(value = "province", required = false) String province,
+			@RequestParam(value = "district", required = false) String district,
 			Authentication authentication) {
+		FilterParam filterParam = new FilterParam();
+		filterParam.setStartedDate(handleDateCommon.convertStringDateToLocalDateTime(startedDate));
+		filterParam.setDistrict(district.equals("") ? null : district);
+		filterParam.setPageNo(pageNo);
+		filterParam.setProvince(province.equals("") ? null : province);
+		filterParam.setClosedDate(handleDateCommon.convertStringDateToLocalDateTime(closedDate));
+		filterParam.setTextSearch(textSearch.equals("") ? null : textSearch);
+		filterParam.setTypeOfAcc(typeOfAcc == 0 ? null : typeOfAcc);
+		filterParam.setTypeOfNews(typeOfNews == 0 ? null : typeOfNews);
 		Page<NewsCard> posts = newsManagementService.getDontPaymentOfUser(pageNo, pageSize, field, mode,
-				authentication.getName());
+				authentication.getName(), filterParam);
 		return new ResponseEntity<Page<NewsCard>>(posts, HttpStatus.OK);
 	}
 
@@ -84,9 +152,25 @@ public class NewsManagementController {
 			@RequestParam(value = "pageSize", defaultValue = PageAndSortConstant.PAGE_SIZE, required = false) int pageSize,
 			@RequestParam(value = "sort", defaultValue = PageAndSortConstant.SORT, required = false) String field,
 			@RequestParam(value = "mode", defaultValue = PageAndSortConstant.MODE, required = false) int mode,
+			@RequestParam(value = "textSearch", required = false) String textSearch,
+			@RequestParam(value = "startedDate", required = false) String startedDate,
+			@RequestParam(value = "closedDate", required = false) String closedDate,
+			@RequestParam(value = "typeOfAcc", required = false) Long typeOfAcc,
+			@RequestParam(value = "typeOfNews", required = false) Long typeOfNews,
+			@RequestParam(value = "province", required = false) String province,
+			@RequestParam(value = "district", required = false) String district,
 			Authentication authentication) {
+		FilterParam filterParam = new FilterParam();
+		filterParam.setStartedDate(handleDateCommon.convertStringDateToLocalDateTime(startedDate));
+		filterParam.setDistrict(district.equals("") ? null : district);
+		filterParam.setPageNo(pageNo);
+		filterParam.setProvince(province.equals("") ? null : province);
+		filterParam.setClosedDate(handleDateCommon.convertStringDateToLocalDateTime(closedDate));
+		filterParam.setTextSearch(textSearch.equals("") ? null : textSearch);
+		filterParam.setTypeOfAcc(typeOfAcc == 0 ? null : typeOfAcc);
+		filterParam.setTypeOfNews(typeOfNews == 0 ? null : typeOfNews);
 		Page<NewsCard> posts = newsManagementService.getWaittingShowOfUser(pageNo, pageSize, field, mode,
-				authentication.getName());
+				authentication.getName(), filterParam);
 		return new ResponseEntity<Page<NewsCard>>(posts, HttpStatus.OK);
 	}
 
@@ -97,9 +181,25 @@ public class NewsManagementController {
 			@RequestParam(value = "pageSize", defaultValue = PageAndSortConstant.PAGE_SIZE, required = false) int pageSize,
 			@RequestParam(value = "sort", defaultValue = PageAndSortConstant.SORT, required = false) String field,
 			@RequestParam(value = "mode", defaultValue = PageAndSortConstant.MODE, required = false) int mode,
+			@RequestParam(value = "textSearch", required = false) String textSearch,
+			@RequestParam(value = "startedDate", required = false) String startedDate,
+			@RequestParam(value = "closedDate", required = false) String closedDate,
+			@RequestParam(value = "typeOfAcc", required = false) Long typeOfAcc,
+			@RequestParam(value = "typeOfNews", required = false) Long typeOfNews,
+			@RequestParam(value = "province", required = false) String province,
+			@RequestParam(value = "district", required = false) String district,
 			Authentication authentication) {
+		FilterParam filterParam = new FilterParam();
+		filterParam.setStartedDate(handleDateCommon.convertStringDateToLocalDateTime(startedDate));
+		filterParam.setDistrict(district.equals("") ? null : district);
+		filterParam.setPageNo(pageNo);
+		filterParam.setProvince(province.equals("") ? null : province);
+		filterParam.setClosedDate(handleDateCommon.convertStringDateToLocalDateTime(closedDate));
+		filterParam.setTextSearch(textSearch.equals("") ? null : textSearch);
+		filterParam.setTypeOfAcc(typeOfAcc == 0 ? null : typeOfAcc);
+		filterParam.setTypeOfNews(typeOfNews == 0 ? null : typeOfNews);
 		Page<NewsCard> posts = newsManagementService.getNewsShowingOfUser(pageNo, pageSize, field, mode,
-				authentication.getName());
+				authentication.getName(), filterParam);
 		return new ResponseEntity<Page<NewsCard>>(posts, HttpStatus.OK);
 	}
 
@@ -110,9 +210,25 @@ public class NewsManagementController {
 			@RequestParam(value = "pageSize", defaultValue = PageAndSortConstant.PAGE_SIZE, required = false) int pageSize,
 			@RequestParam(value = "sort", defaultValue = PageAndSortConstant.SORT, required = false) String field,
 			@RequestParam(value = "mode", defaultValue = PageAndSortConstant.MODE, required = false) int mode,
+			@RequestParam(value = "textSearch", required = false) String textSearch,
+			@RequestParam(value = "startedDate", required = false) String startedDate,
+			@RequestParam(value = "closedDate", required = false) String closedDate,
+			@RequestParam(value = "typeOfAcc", required = false) Long typeOfAcc,
+			@RequestParam(value = "typeOfNews", required = false) Long typeOfNews,
+			@RequestParam(value = "province", required = false) String province,
+			@RequestParam(value = "district", required = false) String district,
 			Authentication authentication) {
+		FilterParam filterParam = new FilterParam();
+		filterParam.setStartedDate(handleDateCommon.convertStringDateToLocalDateTime(startedDate));
+		filterParam.setDistrict(district.equals("") ? null : district);
+		filterParam.setPageNo(pageNo);
+		filterParam.setProvince(province.equals("") ? null : province);
+		filterParam.setClosedDate(handleDateCommon.convertStringDateToLocalDateTime(closedDate));
+		filterParam.setTextSearch(textSearch.equals("") ? null : textSearch);
+		filterParam.setTypeOfAcc(typeOfAcc == 0 ? null : typeOfAcc);
+		filterParam.setTypeOfNews(typeOfNews == 0 ? null : typeOfNews);
 		Page<NewsCard> posts = newsManagementService.getNewsHiddenOfUser(pageNo, pageSize, field, mode,
-				authentication.getName());
+				authentication.getName(), filterParam);
 		return new ResponseEntity<Page<NewsCard>>(posts, HttpStatus.OK);
 	}
 
@@ -123,26 +239,27 @@ public class NewsManagementController {
 			@RequestParam(value = "pageSize", defaultValue = PageAndSortConstant.PAGE_SIZE, required = false) int pageSize,
 			@RequestParam(value = "sort", defaultValue = PageAndSortConstant.SORT, required = false) String field,
 			@RequestParam(value = "mode", defaultValue = PageAndSortConstant.MODE, required = false) int mode,
+			@RequestParam(value = "textSearch", required = false) String textSearch,
+			@RequestParam(value = "startedDate", required = false) String startedDate,
+			@RequestParam(value = "closedDate", required = false) String closedDate,
+			@RequestParam(value = "typeOfAcc", required = false) Long typeOfAcc,
+			@RequestParam(value = "typeOfNews", required = false) Long typeOfNews,
+			@RequestParam(value = "province", required = false) String province,
+			@RequestParam(value = "district", required = false) String district,
 			Authentication authentication) {
+		FilterParam filterParam = new FilterParam();
+		filterParam.setStartedDate(handleDateCommon.convertStringDateToLocalDateTime(startedDate));
+		filterParam.setDistrict(district.equals("") ? null : district);
+		filterParam.setPageNo(pageNo);
+		filterParam.setProvince(province.equals("") ? null : province);
+		filterParam.setClosedDate(handleDateCommon.convertStringDateToLocalDateTime(closedDate));
+		filterParam.setTextSearch(textSearch.equals("") ? null : textSearch);
+		filterParam.setTypeOfAcc(typeOfAcc == 0 ? null : typeOfAcc);
+		filterParam.setTypeOfNews(typeOfNews == 0 ? null : typeOfNews);
 		Page<NewsCard> posts = newsManagementService.getNewsExpriedOfUser(pageNo, pageSize, field, mode,
-				authentication.getName());
+				authentication.getName(), filterParam);
 		return new ResponseEntity<Page<NewsCard>>(posts, HttpStatus.OK);
 	}
-
-	@GetMapping(value = "/news-management/get-news-text-search")
-	@PreAuthorize("hasRole('ROLE_USER')" + "||" + "hasRole('ROLE_ADMIN')")
-	public ResponseEntity<Page<NewsCard>> getNewsByTextSearch(
-			@RequestParam(value = "pageNo", defaultValue = PageAndSortConstant.PAGE_NO, required = false) int pageNo,
-			@RequestParam(value = "pageSize", defaultValue = PageAndSortConstant.PAGE_SIZE, required = false) int pageSize,
-			@RequestParam(value = "sort", defaultValue = PageAndSortConstant.SORT, required = false) String field,
-			@RequestParam(value = "mode", defaultValue = PageAndSortConstant.MODE, required = false) int mode,
-			@RequestParam(value = "status") String status, @RequestParam(value = "textSearch") String textSearch,
-			@RequestBody(required = false) FilterParam filterParam, Authentication authentication) {
-		Page<NewsCard> posts = newsManagementService.getNewsByTextSearch(pageNo, pageSize, field, mode,
-				authentication.getName(), status, textSearch, filterParam);
-		return new ResponseEntity<Page<NewsCard>>(posts, HttpStatus.OK);
-	}
-	
 	
 	@PostMapping("/news-management/update-hidden-post")
 	@PreAuthorize("hasRole('ROLE_USER')" + "||" + "hasRole('ROLE_ADMIN')")

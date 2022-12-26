@@ -39,9 +39,14 @@ public class NewsManagementImpl implements NewsManagementService {
 	private HandleDateCommon handleDateCommon;
 
 	@Override
-	public Page<NewsCard> getAllNewsOfUser(int pageNo, int pageSize, String field, int mode, String username) {
+	public Page<NewsCard> getAllNewsOfUser(int pageNo, int pageSize, String field, int mode, 
+											String username, FilterParam filterParam) {
 		Pageable pageable = pageAndSortCommon.getPageable(pageNo, pageSize, field, mode);
-		org.springframework.data.domain.Page<Post> page = postRepository.getNewsOfUser(pageable, username);
+		org.springframework.data.domain.Page<Post> page = postRepository.getNewsOfUser(
+				pageable, username, filterParam.getTextSearch(), filterParam.getStartedDate(), 
+				filterParam.getClosedDate(),
+				filterParam.getTypeOfAcc() ,filterParam.getTypeOfNews(),
+				filterParam.getProvince(), filterParam.getDistrict());
 		List<NewsCard> newsCards = postMapper.mapPostsToNewsCards(page.getContent());
 		for (int i = 0; i < page.getContent().size(); i++) {
 			Post post = page.getContent().get(i);
@@ -74,10 +79,15 @@ public class NewsManagementImpl implements NewsManagementService {
 	}
 
 	@Override
-	public Page<NewsCard> getNewsWaitingAproved(int pageNo, int pageSize, String field, int mode, String username) {
+	public Page<NewsCard> getNewsWaitingAproved(int pageNo, int pageSize, String field, 
+			int mode, String username, FilterParam filterParam) {
 		Pageable pageable = pageAndSortCommon.getPageable(pageNo, pageSize, field, mode);
 		org.springframework.data.domain.Page<Post> page = postRepository.getNewsWaittingAprovedOfUser(pageable,
-				username);
+				username,
+				filterParam.getTextSearch(), filterParam.getStartedDate(), 
+				filterParam.getClosedDate(),
+				filterParam.getTypeOfAcc() ,filterParam.getTypeOfNews(),
+				filterParam.getProvince(), filterParam.getDistrict());
 		List<NewsCard> newsCards = postMapper.mapPostsToNewsCards(page.getContent());
 		for (int i = 0; i < page.getContent().size(); i++) {
 			newsCards.get(i).setMode(NewsModeConstant.WAITING_APROVED);
@@ -88,9 +98,14 @@ public class NewsManagementImpl implements NewsManagementService {
 	}
 
 	@Override
-	public Page<NewsCard> getNewsRejectOfUser(int pageNo, int pageSize, String field, int mode, String username) {
+	public Page<NewsCard> getNewsRejectOfUser(int pageNo, int pageSize, String field, 
+			int mode, String username, FilterParam filterParam) {
 		Pageable pageable = pageAndSortCommon.getPageable(pageNo, pageSize, field, mode);
-		org.springframework.data.domain.Page<Post> page = postRepository.getNewsRejectOfUser(pageable, username);
+		org.springframework.data.domain.Page<Post> page = postRepository.getNewsRejectOfUser(pageable, 
+				username, filterParam.getTextSearch(), filterParam.getStartedDate(), 
+				filterParam.getClosedDate(),
+				filterParam.getTypeOfAcc() ,filterParam.getTypeOfNews(),
+				filterParam.getProvince(), filterParam.getDistrict());
 		List<NewsCard> newsCards = postMapper.mapPostsToNewsCards(page.getContent());
 		for (int i = 0; i < page.getContent().size(); i++) {
 			newsCards.get(i).setMode(NewsModeConstant.NEWS_REJECT);
@@ -101,9 +116,14 @@ public class NewsManagementImpl implements NewsManagementService {
 	}
 
 	@Override
-	public Page<NewsCard> getDontPaymentOfUser(int pageNo, int pageSize, String field, int mode, String username) {
+	public Page<NewsCard> getDontPaymentOfUser(int pageNo, int pageSize, String field, 
+			int mode, String username, FilterParam filterParam) {
 		Pageable pageable = pageAndSortCommon.getPageable(pageNo, pageSize, field, mode);
-		org.springframework.data.domain.Page<Post> page = postRepository.getDontPaymentOfUser(pageable, username);
+		org.springframework.data.domain.Page<Post> page = postRepository.getDontPaymentOfUser(pageable, 
+				username, filterParam.getTextSearch(), filterParam.getStartedDate(), 
+				filterParam.getClosedDate(),
+				filterParam.getTypeOfAcc() ,filterParam.getTypeOfNews(),
+				filterParam.getProvince(), filterParam.getDistrict());
 		List<NewsCard> newsCards = postMapper.mapPostsToNewsCards(page.getContent());
 		for (int i = 0; i < page.getContent().size(); i++) {
 			newsCards.get(i).setTotalAmount(page.getContent().get(i).getTotalAmount());
@@ -115,10 +135,14 @@ public class NewsManagementImpl implements NewsManagementService {
 	}
 
 	@Override
-	public Page<NewsCard> getWaittingShowOfUser(int pageNo, int pageSize, String field, int mode, String username) {
+	public Page<NewsCard> getWaittingShowOfUser(int pageNo, int pageSize, String field,
+			int mode, String username, FilterParam filterParam) {
 		Pageable pageable = pageAndSortCommon.getPageable(pageNo, pageSize, field, mode);
 		org.springframework.data.domain.Page<Post> page = postRepository.getWaittingShowOfUser(pageable, username,
-				handleDateCommon.getCurrentDateTime());
+				handleDateCommon.getCurrentDateTime(), filterParam.getTextSearch(), filterParam.getStartedDate(), 
+				filterParam.getClosedDate(),
+				filterParam.getTypeOfAcc() ,filterParam.getTypeOfNews(),
+				filterParam.getProvince(), filterParam.getDistrict());
 		List<NewsCard> newsCards = postMapper.mapPostsToNewsCards(page.getContent());
 		for (int i = 0; i < page.getContent().size(); i++) {
 			newsCards.get(i).setMode(NewsModeConstant.WAITING_SHOW);
@@ -129,10 +153,16 @@ public class NewsManagementImpl implements NewsManagementService {
 	}
 
 	@Override
-	public Page<NewsCard> getNewsShowingOfUser(int pageNo, int pageSize, String field, int mode, String username) {
+	public Page<NewsCard> getNewsShowingOfUser(int pageNo, int pageSize, String field, 
+			int mode, String username, FilterParam filterParam) {
 		Pageable pageable = pageAndSortCommon.getPageable(pageNo, pageSize, field, mode);
-		org.springframework.data.domain.Page<Post> page = postRepository.getNewsShowingOfUser(pageable, username,
-				handleDateCommon.getCurrentDateTime());
+		org.springframework.data.domain.Page<Post> page = postRepository.getNewsShowingOfUser(pageable, 
+				username,
+				handleDateCommon.getCurrentDateTime(), 
+				filterParam.getTextSearch(), filterParam.getStartedDate(), 
+				filterParam.getClosedDate(),
+				filterParam.getTypeOfAcc() ,filterParam.getTypeOfNews(),
+				filterParam.getProvince(), filterParam.getDistrict());
 		List<NewsCard> newsCards = postMapper.mapPostsToNewsCards(page.getContent());
 		for (int i = 0; i < page.getContent().size(); i++) {
 			newsCards.get(i).setMode(NewsModeConstant.SHOWING);
@@ -143,10 +173,14 @@ public class NewsManagementImpl implements NewsManagementService {
 	}
 
 	@Override
-	public Page<NewsCard> getNewsExpriedOfUser(int pageNo, int pageSize, String field, int mode, String username) {
+	public Page<NewsCard> getNewsExpriedOfUser(int pageNo, int pageSize, 
+			String field, int mode, String username, FilterParam filterParam) {
 		Pageable pageable = pageAndSortCommon.getPageable(pageNo, pageSize, field, mode);
 		org.springframework.data.domain.Page<Post> page = postRepository.getNewsExpriedOfUser(pageable, username,
-				handleDateCommon.getCurrentDateTime());
+				handleDateCommon.getCurrentDateTime(), filterParam.getTextSearch(), filterParam.getStartedDate(), 
+				filterParam.getClosedDate(),
+				filterParam.getTypeOfAcc() ,filterParam.getTypeOfNews(),
+				filterParam.getProvince(), filterParam.getDistrict());
 		List<NewsCard> newsCards = postMapper.mapPostsToNewsCards(page.getContent());
 		for (int i = 0; i < page.getContent().size(); i++) {
 			newsCards.get(i).setMode(NewsModeConstant.EXPRIED);
@@ -157,9 +191,14 @@ public class NewsManagementImpl implements NewsManagementService {
 	}
 
 	@Override
-	public Page<NewsCard> getNewsHiddenOfUser(int pageNo, int pageSize, String field, int mode, String username) {
+	public Page<NewsCard> getNewsHiddenOfUser(int pageNo, int pageSize, 
+			String field, int mode, String username, FilterParam filterParam) {
 		Pageable pageable = pageAndSortCommon.getPageable(pageNo, pageSize, field, mode);
-		org.springframework.data.domain.Page<Post> page = postRepository.getNewsHiddenOfUser(pageable, username);
+		org.springframework.data.domain.Page<Post> page = postRepository.getNewsHiddenOfUser(pageable, 
+				username, filterParam.getTextSearch(), filterParam.getStartedDate(), 
+				filterParam.getClosedDate(),
+				filterParam.getTypeOfAcc() ,filterParam.getTypeOfNews(),
+				filterParam.getProvince(), filterParam.getDistrict());
 		List<NewsCard> newsCards = postMapper.mapPostsToNewsCards(page.getContent());
 		for (int i = 0; i < page.getContent().size(); i++) {
 			newsCards.get(i).setMode(NewsModeConstant.HINDDEN);

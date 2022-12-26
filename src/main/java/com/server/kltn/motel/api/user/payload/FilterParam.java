@@ -1,48 +1,64 @@
 package com.server.kltn.motel.api.user.payload;
 
+import java.time.LocalDateTime;
+
 public class FilterParam {
-	private String startedDate;
-	private String closedDate;
-	private long[] typeOfAcc;
-	private long[] typeOfNews;
-	private String[] province;
-	private String[] district;
 	
-	public String getStartedDate() {
-		return startedDate;
-	}
-	public void setStartedDate(String startedDate) {
-		this.startedDate = startedDate;
-	}
-	public String getClosedDate() {
-		return closedDate;
-	}
-	public void setClosedDate(String closedDate) {
-		this.closedDate = closedDate;
-	}
-	public long[] getTypeOfAcc() {
+	private int pageNo;
+	private String textSearch;
+	private LocalDateTime startedDate;
+	private LocalDateTime closedDate;
+	private Long typeOfAcc;
+	private Long typeOfNews;
+	private String province;
+	private String district;
+	
+	public Long getTypeOfAcc() {
 		return typeOfAcc;
 	}
-	public void setTypeOfAcc(long[] typeOfAcc) {
+	public void setTypeOfAcc(Long typeOfAcc) {
 		this.typeOfAcc = typeOfAcc;
 	}
-	public long[] getTypeOfNews() {
+	public Long getTypeOfNews() {
 		return typeOfNews;
 	}
-	public void setTypeOfNews(long[] typeOfNews) {
+	public void setTypeOfNews(Long typeOfNews) {
 		this.typeOfNews = typeOfNews;
 	}
-	public String[] getProvince() {
+	public int getPageNo() {
+		return pageNo;
+	}
+	public void setPageNo(int pageNo) {
+		this.pageNo = pageNo;
+	}
+	public String getTextSearch() {
+		return textSearch;
+	}
+	public void setTextSearch(String textSearch) {
+		this.textSearch = textSearch;
+	}
+	public String getProvince() {
 		return province;
 	}
-	public void setProvince(String[] province) {
+	public void setProvince(String province) {
 		this.province = province;
 	}
-	public String[] getDistrict() {
+	public String getDistrict() {
 		return district;
 	}
-	public void setDistrict(String[] district) {
+	public void setDistrict(String district) {
 		this.district = district;
 	}
-	
+	public LocalDateTime getStartedDate() {
+		return startedDate;
+	}
+	public void setStartedDate(LocalDateTime startedDate) {
+		this.startedDate = startedDate;
+	}
+	public LocalDateTime getClosedDate() {
+		return closedDate;
+	}
+	public void setClosedDate(LocalDateTime closedDate) {
+		this.closedDate = closedDate;
+	}
 }

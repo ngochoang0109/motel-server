@@ -14,4 +14,6 @@ public interface PostNewsService {
 					CostCalculate costCalculate, List<MultipartFile> images,String username);
 	DetailNews getDetailNews(long postId);
 	void extendedTimeToPost(long postId, CostCalculate costCalculate, String username);
+	void editNews( NewsInfor newsInfor, AccomodationInfor accomodationInfor, 
+			CostCalculate costCalculate, List<MultipartFile> images,String username, long postId);
 }

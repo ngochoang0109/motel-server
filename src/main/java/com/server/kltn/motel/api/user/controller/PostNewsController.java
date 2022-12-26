@@ -99,4 +99,16 @@ public class PostNewsController {
 			@PathVariable(value = "postId") Long postId, @RequestBody CostCalculate costCalculate) {
 		postNewsService.extendedTimeToPost( postId, costCalculate, authentication.getName());
 	}
+	
+	@PostMapping("/post-news/edit/{postId}")
+	@PreAuthorize("hasRole('ROLE_USER')" + "||" + "hasRole('ROLE_ADMIN')")
+	public ResponseEntity<Post> editPost(Authentication authentication, 
+			@RequestPart NewsInfor postNews,
+			@RequestPart AccomodationInfor accomodationInfor, 
+			@RequestPart CostCalculate costCalculate,
+			@RequestPart(value = "images", required = false) List<MultipartFile> images,
+			@PathVariable(value = "postId") Long postId) {
+		postNewsService.editNews(postNews, accomodationInfor, costCalculate, images, authentication.getName(), postId);
+		return new ResponseEntity<Post>(new Post(), HttpStatus.OK);
+	}
 }

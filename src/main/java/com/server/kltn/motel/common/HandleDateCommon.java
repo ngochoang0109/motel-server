@@ -16,6 +16,9 @@ public class HandleDateCommon {
 	}
 	
 	public LocalDateTime convertStringDateToLocalDateTime(String strDate) {
+		if (strDate == null) {
+			return null;
+		}
 		DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
 		//Parse String to LocalDateTime
 		LocalDateTime dateTime = LocalDateTime.parse(strDate, formatter);
