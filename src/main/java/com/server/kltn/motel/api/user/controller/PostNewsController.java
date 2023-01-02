@@ -62,7 +62,8 @@ public class PostNewsController {
 	public ResponseEntity<UserInfor> getCurrentUser(Authentication authentication) {
 		User user = userService.findUserByUsernameOrEmail(authentication.getName(), authentication.getName());
 		return new ResponseEntity<UserInfor>(
-				new UserInfor(user.getFullname(), user.getPhone(), user.getAddress(), user.getEmail()), HttpStatus.OK);
+				new UserInfor(user.getFullname(), user.getPhone(), user.getAddress(), 
+						user.getEmail(), user.getUsername(), user.getAvatar() == null ? "" : user.getAvatar().getSource()), HttpStatus.OK);
 	}
 
 	@GetMapping("/auth/get-type-of-post")
